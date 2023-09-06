@@ -1,0 +1,64 @@
+\documentclass{beamer}
+\usetheme{default}
+
+\title{S3 performance em HPC}
+\author{João Pedro Abreu de Souza}
+\begin{document}
+\begin{frame}[plain]
+    \maketitle
+\end{frame}
+\begin{frame}{HPC}
+	\begin{itemize}
+		\item Processamento
+		\pause
+		\item Memoria
+		\pause
+		\item IO (foco do artigo)
+	\end{itemize}
+\end{frame}
+\begin{frame}{IO - verificação}
+	\begin{itemize}
+		\item IO500
+		\item MD-Workbench
+	\end{itemize}
+\end{frame}
+\begin{frame}{Armazenamento local}
+	\begin{itemize}
+		\item Sistemas de arquivos
+		\begin{itemize}
+			\item ext4
+			\item btfs
+			\item zfs
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+\begin{frame}{Armazenamento distribuido}
+	\begin{itemize}
+		\item Objetos
+\begin{itemize}
+	\item s3
+\end{itemize}
+		\item Sistema de arquivos
+		\begin{itemize}
+			\item Ceph
+			\item OpenStack Swift
+			\item Minio
+			\item MPI-IO
+		\end{itemize}
+		\end{itemize}
+\end{frame}
+\begin{frame}{Bibliotecas s3 em hpc}
+	\begin{itemize}
+		\item libs3
+		\item S3Remote
+		\item S3Embedded
+	\end{itemize}
+\end{frame}
+\begin{frame}{Conclusão}
+	\begin{itemize}
+		\item Bibliotecas s3 não estão prontas para hpc
+		\item Com o IO-500 aumentado, a comunidade pode observar o s3
+		\item integrações entre S3 e sistemas de arquivos permitiriam que clientes s3 acessassem IO de HPC
+	\end{itemize}
+\end{frame}
+\end{document}

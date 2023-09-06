@@ -1,0 +1,47 @@
+\providecommand{\abntreprintinfo}[1]{%
+ \citeonline{#1}}
+\setlength{\labelsep}{0pt}\begin{thebibliography}{}
+\providecommand{\abntrefinfo}[3]{}
+\providecommand{\abntbstabout}[1]{}
+\abntbstabout{v-1.9.7 }
+
+\bibitem[Casella e Berger 2004]{casella}
+\abntrefinfo{Casella e Berger}{CASELLA; BERGER}{2004}
+{CASELLA, G.; BERGER, R.~L. \emph{Statistical Inference}. 2. ed. [S.l.]:
+  Duxbury, 2004.}
+
+\bibitem[James 2004]{james}
+\abntrefinfo{James}{JAMES}{2004}
+{JAMES, B.~R. \emph{Probabilidade: um curso intermedi\'ario}. 3. ed. [S.l.]:
+  Impa, 2004.}
+
+\bibitem[Kubrusly 2016]{jessica_latex_intermediario}
+\abntrefinfo{Kubrusly}{KUBRUSLY}{2016}
+{KUBRUSLY, J. Apostila de latex intermediário. 2016. Dispon{\'\i}vel em:
+  \url{http://www.professores.uff.br/jessica/wp-content/uploads/sites/137/2017/09/aulas\_latex\_intermediario.pdf}.}
+
+\bibitem[Kubrusly 2018]{jessica_latex_basico}
+\abntrefinfo{Kubrusly}{KUBRUSLY}{2018}
+{KUBRUSLY, J. Apostila de latex básico. 2018. Dispon{\'\i}vel em:
+  \url{http://www.professores.uff.br/jessica/?ddownload=148}.}
+
+\bibitem[Larson 1982]{larson}
+\abntrefinfo{Larson}{LARSON}{1982}
+{LARSON, H.~J. \emph{Introduction to Probability Theory and Statistical
+  Inference}. 3. ed. [S.l.]: John Wiley \& Sons, 1982.}
+
+\bibitem[{R Core Team} 2014]{R}
+\abntrefinfo{{R Core Team}}{{R Core Team}}{2014}
+{{R Core Team}. \emph{R: A Language and Environment for Statistical Computing}.
+Vienna, Austria, 2014. Dispon{\'\i}vel em: \url{http://www.R-project.org/}.}
+
+\bibitem[Ross 2006]{ross_simulation}
+\abntrefinfo{Ross}{ROSS}{2006}
+{ROSS, S.~M. \emph{Simulation}. 4. ed. [S.l.]: Academic Press, 2006.}
+
+\bibitem[Ross 2010]{ross_probability}
+\abntrefinfo{Ross}{ROSS}{2010}
+{ROSS, S.~M. \emph{A First Course in Probability}. 8. ed. [S.l.]: Prentice
+  Hall, 2010.}
+
+\end{thebibliography}
