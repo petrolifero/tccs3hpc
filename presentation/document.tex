@@ -7,9 +7,22 @@
 \begin{document}
 \begin{frame}{Analyzing the Performance of the S3 Object Storage API for HPC Workloads}
 \end{frame}
-\import{./introduction/}{introduction}
-\import{./materialsAndMethods/}{materialsAndMethods}
-\begin{frame}{... S3 ...}
+\begin{frame}{Organização do artigo}
+ \begin{itemize}
+     \item introdução
+     \item materiais e métodos
+     \item resultados
+     \item S3Embedded
+     \item conclusão
+ \end{itemize}   
+\end{frame}
+\begin{frame}{introdução}
+\begin{itemize}
+    \item With the increased prevalence of cloud computing and the increased use of the Infrastructure as a Service (IaaS), various APIs are provided to access storage.
+    \item The Amazon Simple Storage Service (S3) API is the most widely adopted object storage in the cloud.
+\end{itemize}    
+\end{frame}
+\begin{frame}{introdução - S3}
 	\begin{itemize}
 		\item 	Um dos primeiros serviços da AWS, lançado em 2006.
 		\pause
@@ -22,7 +35,7 @@
 		\item	Um dos serviços mais utilizados para armazenar documentos na AWS, liberando espaço de serviços mais caros como RDS.
 	\end{itemize}
 \end{frame}
-\begin{frame}{... Object Storage API ...}
+\begin{frame}{introdução - Object Storage API}
 	\begin{itemize}
 		\item API REST estável (i.e última atualização da API data de 1/3/2006)
 		\pause
@@ -49,20 +62,19 @@
 		\end{itemize}
 	\end{itemize}
 \end{frame}
-\begin{frame}{... HPC ...}
+\begin{frame}{introdução - contribuições}
+\begin{itemize}
+    \item The modification of
+existing HPC benchmarks to quantify the performance of the S3 API by displaying relevant performance characteristics and providing a deep analysis of the latency of individual operations
+    \item the creation of a high-performance I/O library called S3Embedded, which can be used as a drop-in replacement of the commonly used libs3, and which is also compatible and competitive with the HPC I/O protocols, and optimized for use in
+distributed environments
+\end{itemize}
+\end{frame}
+\begin{frame}{introdução - sistema sobre teste}
 	\begin{itemize}
-		\item Computação para problemas complexos (i.e fisica, quimica, engenharia) e custosos computacionalmente
-		\pause
-		\item Criação de programas para ganho de performance
-		\pause
-		\item Dispostos em clusters com conexão de alta velocidade
-		\pause
-		\item Usualmente realizado em on-premises
-		\item Sistemas distribuídos sem memória compartilhada, comunicando-se através de mensagens
-		\pause
-		\item Pela dificuldade em coordenar manualmente o cluster e por padrões de interação emergirem, surgiu um padrão de comunicação chamado MPI
-		\pause
-		\item O MPI possui varias implementações sendo a mais famosa o OpenMPI
+		\item Supercomputador Mistral alemão
+		\item Performance de 2.54 PetaFLOPS (pico de 3.14 PetaFLOPS)
+		\item \#33 na lista top500
 	\end{itemize}
 \end{frame}
 \begin{frame}{... Workloads}
@@ -260,5 +272,8 @@
 		\item Com o IO-500 aumentado, a comunidade pode observar o s3
 		\item integrações entre S3 e sistemas de arquivos permitiriam que clientes s3 acessassem IO de HPC
 	\end{itemize}
+\end{frame}
+\begin{frame}{Adendo}
+    fsx - lustre
 \end{frame}
 \end{document}
