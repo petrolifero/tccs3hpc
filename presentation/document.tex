@@ -77,33 +77,13 @@ distributed environments
 		\item \#33 na lista top500
 	\end{itemize}
 \end{frame}
-\begin{frame}{... Workloads}
-	\begin{itemize}
-		\item Tarefas de HPC consistem em operações de computação interna aos nós, IO na forma de mensagens entre os nós, IO no consumo de dados em memória secundaria e IO na produção de dados em memória secundaria, alguns finais, outros que serão consumidos por outros nós.
-		\pause
-		\item A performance da leitura e a escrita desses dados depende do tamanho da informação a ser lida ou escrita, da topologia da rede e da localidade das informações lidas ou escritas.
-		\pause
-		\item Tradicionalmente, Data centers utilizam sistemas de arquivos paralelos como Lustre ou GPFS para obter a maior performance.
-		\pause
-		\item Lustre oferece uma API posix para acesso aos arquivos.
-		\pause
-		\item 25\% a 90\% dos arquivos gerados por um sistema HPC residem na faixa de 0 a 64KB, o que pode gerar pior performance em um workload do que um arquivo único maior.
-		\pause
-		\item Obtenção de metadados (i.e relação de nomes e localização, estrutura de diretorios, permissões) também é uma operação tipica de workloads em HPC.
-	\end{itemize}
+\begin{frame}{materiais e metodos}
+    \begin{itemize}
+        \item We aim to analyze the performance of the S3 interface of different vendors in an
+HPC environment to assess the performance potential of the S3 API
+    \end{itemize}
 \end{frame}
-\begin{frame}{Analyzing the Performance ...}
-	\begin{itemize}
-		\item Para se analisar algo, precisamos de métricas e testes padronizados
-		\pause
-		\item Benchmarks
-		\begin{itemize}
-			\item IO500
-			\item MD-Workbench
-		\end{itemize}
-	\end{itemize}
-´\end{frame}
-\begin{frame}{IO500}
+\begin{frame}{materiais e metodos - IO500}
 	\begin{itemize}
 		\item Estrutura testes em dois setups : easy e hard
 		\item Setup easy feito para mostrar o melhor caso do sistema de armazenamento avaliado, com configurações do usuário do benchmark
@@ -117,24 +97,7 @@ distributed environments
 		\end{itemize}
 		\end{itemize}
 	\end{frame}
-\begin{frame}{IO500 - metricas}
-	Metricas avaliadas : 
-		\begin{itemize}
-			\item ior-easy-write
-			\item mdtest-easy-write
-			\item ior-hard-write
-			\item mdtest-hard-write
-			\item ior-easy-read
-			\item mdtest-easy-stat
-			\item ior-hard-read
-			\item mdtest-hard-stat
-			\item mdtest-easy-delete
-			\item mdtest-hard-read
-			\item mdtest-hard-delete
-		\end{itemize}
-
-\end{frame}
-\begin{frame}{IO500 - modificações s3}
+ \begin{frame}{materiais e metodos - IO500 - modificações s3}
 	For IO500, an optimistic S3 interface backend using the libS3 client library is implemented for IOR in the sense that it stores each fragment as one independent object, and as
 	such, it is expected to generate the best performance for many workloads.
 	For identifying bottlenecks, it supports two modes:
@@ -150,7 +113,7 @@ distributed environments
 \end{itemize}
 	
 \end{frame}
-\begin{frame}{MD-Workbench}
+\begin{frame}{materiais e metodos - MD-Workbench}
 	\begin{itemize}
 		\item Possui dois modos
 		\begin{itemize}
@@ -160,27 +123,15 @@ distributed environments
 		\item	MD-Workbench casa muito melhor com a API do S3
 	\end{itemize}
 \end{frame}
-\begin{frame}{MD-Workbench - metricas}
-	\begin{itemize}
-		\item rate
-		\item throughput
-	\end{itemize}
-\end{frame}
-\begin{frame}{MD-Workbench - modificações s3}
+\begin{frame}{materiais e metodos - MD-Workbench - modificações s3}
 	\begin{itemize}
 		\item 	O MD-Workbench funciona com um sistema de plugins, em que o arquivo principal possui um array de vtables com operações de IO
 		\item	A adição do suporte ao S3 foi apenas questão de adicionar um novo plugin, implementando as chamadas de IO como chamadas a libs3 e adicionar esse plugin ao array supracitado
 	\end{itemize}
 
 \end{frame}
-\begin{frame}{sistema sobre teste}
-	\begin{itemize}
-		\item Supercomputador Mistral alemão
-		\item Performance de 2.54 PetaFLOPS (pico de 3.14 PetaFLOPS)
-		\item \#33 na lista top500
-	\end{itemize}
-\end{frame}
-\begin{frame}{minIO}
+
+\begin{frame}{materiais e metodos - minIO}
 	\begin{itemize}
 		\item 	MinIO is a high-performance, S3 compatible object store. It is built for
 		large scale AI/ML, data lake and database workloads. It is software-defined
@@ -188,7 +139,7 @@ distributed environments
 		\item	Pode utilizar multiplos backends para prover essa interface. O lustre é utilizado como backend do minIO a fim de rodar os testes sob uma mesma interface mas com uma baseline de um sistema de arquivos tipico.
 	\end{itemize}
 \end{frame}
-\begin{frame}{minIO - modos}
+\begin{frame}{materiais e metodos - minIO - modos}
 	\begin{itemize}
 		\item gateway (gw)
 		\begin{itemize}
@@ -208,7 +159,46 @@ distributed environments
 		\end{itemize}
 	\end{itemize}
 \end{frame}
-\begin{frame}{fase 1 - minIO - single cliente}
+
+\begin{frame}{resultados - Analyzing the Performance ...}
+	\begin{itemize}
+		\item Para se analisar algo, precisamos de métricas e testes padronizados
+		\pause
+		\item Benchmarks
+		\begin{itemize}
+			\item IO500
+			\item MD-Workbench
+		\end{itemize}
+	\end{itemize}
+´\end{frame}
+
+\begin{frame}{resultados - IO500 - metricas}
+	Metricas avaliadas : 
+		\begin{itemize}
+			\item ior-easy-write
+			\item mdtest-easy-write
+			\item ior-hard-write
+			\item mdtest-hard-write
+			\item ior-easy-read
+			\item mdtest-easy-stat
+			\item ior-hard-read
+			\item mdtest-hard-stat
+			\item mdtest-easy-delete
+			\item mdtest-hard-read
+			\item mdtest-hard-delete
+		\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}{resultados - MD-Workbench - metricas}
+	\begin{itemize}
+		\item rate
+		\item throughput
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{resultados - fase 1 - minIO - single cliente}
 	\begin{itemize}
 		\item The first tests are performed using IOR directly
 		\item the standalone mode shows the best performance
@@ -223,7 +213,7 @@ distributed environments
 		can be obtained for read and write, respectively.
 	\end{itemize}
 \end{frame}
-\begin{frame}{fase 1 - minIO - parallel IO}
+\begin{frame}{resultados - fase 1 - minIO - parallel IO}
 	\begin{itemize}
 		\item Assuming an ideal scenario, we
 		start MinIO in standalone mode with RAM as backend (sa-shm) on one node.
@@ -234,7 +224,7 @@ distributed environments
 		single server, it is close to the available network bandwidth
 	\end{itemize}
 \end{frame}
-\begin{frame}{fase 2 - Tests against S3 Compatible Systems}
+\begin{frame}{resultados - fase 2 - Tests against S3 Compatible Systems}
 	\begin{itemize}
 		\item The Benchmarks are performed on Mistral using IO500 and MD-Workbench.
 		\item Tests are conducted against the OpenStack Swift system already available in DKRZ
@@ -249,7 +239,7 @@ distributed environments
 		\item A latencia observada com o swift era menos previsivel do que com o Lustre, levando a conclusão que os processos por trás da implementação do s3 eram a principal origem da latência.
 	\end{itemize}
 \end{frame}
-\begin{frame}{fase 3 - S3Embedded}
+\begin{frame}{resultados - fase 3 - S3Embedded}
 	\begin{itemize}
 		\item Por conta dos problemas de escalabilidade reportados na fase 2, foi criada uma biblioteca, S3Embedded, baseada na libs3
 		\item partes da libs3 foram substituidas, a fim de investigar se aquela parte removida era a causadora da latência
