@@ -159,7 +159,12 @@ HPC environment to assess the performance potential of the S3 API
 		\end{itemize}
 	\end{itemize}
 \end{frame}
-
+\begin{frame}{materiais e metodos - minIO - modos - distributed servers}
+    \includegraphics[width=0.6\paperwidth]{presentation/5.png}
+\end{frame}
+\begin{frame}{materiais e metodos - minIO - modos - gateway}
+    \includegraphics[width=0.6\paperwidth]{presentation/6.png}
+\end{frame}
 \begin{frame}{resultados - Analyzing the Performance ...}
 	\begin{itemize}
 		\item Para se analisar algo, precisamos de métricas e testes padronizados
@@ -198,7 +203,7 @@ HPC environment to assess the performance potential of the S3 API
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{resultados - fase 1 - minIO - single cliente}
+\begin{frame}{resultados - fase 1 - minIO - single client}
 	\begin{itemize}
 		\item The first tests are performed using IOR directly
 		\item the standalone mode shows the best performance
@@ -213,6 +218,12 @@ HPC environment to assess the performance potential of the S3 API
 		can be obtained for read and write, respectively.
 	\end{itemize}
 \end{frame}
+\begin{frame}{resultados - fase 1 - minIO - single client}
+    \includegraphics[width=0.9\paperwidth]{presentation/7.png}
+\end{frame}
+\begin{frame}{resultados - fase 1 - minIO - single client}
+    \includegraphics[width=0.9\paperwidth]{presentation/8.png}
+\end{frame}
 \begin{frame}{resultados - fase 1 - minIO - parallel IO}
 	\begin{itemize}
 		\item Assuming an ideal scenario, we
@@ -223,6 +234,12 @@ HPC environment to assess the performance potential of the S3 API
 		\item For the
 		single server, it is close to the available network bandwidth
 	\end{itemize}
+\end{frame}
+\begin{frame}{resultados - fase 1 - minIO - parallel IO}
+    \includegraphics[width=0.7\paperwidth]{presentation/9.png}
+\end{frame}
+\begin{frame}{resultados - fase 1 - minIO - parallel IO}
+    \includegraphics[width=0.7\paperwidth]{presentation/10.png}
 \end{frame}
 \begin{frame}{resultados - fase 2 - Tests against S3 Compatible Systems}
 	\begin{itemize}
@@ -238,6 +255,9 @@ HPC environment to assess the performance potential of the S3 API
 		each I/O operation.
 		\item A latencia observada com o swift era menos previsivel do que com o Lustre, levando a conclusão que os processos por trás da implementação do s3 eram a principal origem da latência.
 	\end{itemize}
+\end{frame}
+\begin{frame}{resultados - fase 2 - Tests against S3 Compatible Systems}
+    \includegraphics[width=0.9\paperwidth]{presentation/14.png}
 \end{frame}
 \begin{frame}{resultados - fase 3 - S3Embedded}
 	\begin{itemize}
