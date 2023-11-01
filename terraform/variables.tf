@@ -1,9 +1,9 @@
 variable "cluster_size" {
-	 default=10
+	 default=11
 	 type=number
 }
 
 variable "cluster_ami" {
-	 default="ami-0393d979714af82dd"
+	 default="ami-0cca9f4a2327918eb"
 	 type=string
 }

@@ -30,6 +30,15 @@ resource "aws_vpc_security_group_egress_rule" "repositories_access" {
   to_port           = 80
 }
 
+resource "aws_vpc_security_group_egress_rule" "repositories_access_secure" {
+  security_group_id = aws_security_group.ssh_access.id
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = 443
+  ip_protocol       = "tcp"
+  to_port           = 443
+}
+
+
 resource "aws_vpc_security_group_egress_rule" "github_access" {
   security_group_id = aws_security_group.ssh_access.id
   cidr_ipv4         = "0.0.0.0/0"
@@ -64,17 +73,10 @@ resource "aws_fsx_lustre_file_system" "example" {
   per_unit_storage_throughput = 200
 }
 
-resource "aws_instance" "manager" {
-  ami             = var.cluster_ami
-  instance_type   = "t3.micro"
-  key_name        = aws_key_pair.deployer.key_name
-  security_groups = [aws_security_group.ssh_access.name]
-}
-
 resource "aws_instance" "cluster" {
   count           = var.cluster_size
   ami             = var.cluster_ami
-  instance_type   = "t3.micro"
+  instance_type   = "t3.large"
   key_name        = aws_key_pair.deployer.key_name
   security_groups = [aws_security_group.ssh_access.name]
 }

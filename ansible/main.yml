@@ -1,0 +1,44 @@
+---
+- name: Configuração básica
+  hosts: all
+  become: true
+  tasks:
+    - name: Garantir que o diretório /tmp/fsx exista
+      file:
+        path: /tmp/fsx
+        state: directory
+#    - name: mount /tmp/fsx
+#      shell: "sudo mount -t lustre -o relatime,flock {{ dns_name }}@tcp:{{ mount_name }} /tmp/fsx"
+
+    - name: Copiar o diretório local ../io500 para /tmp/codigo
+      become: yes
+      become_user: ec2-user
+      synchronize:
+        src: "../io500"
+        dest: "/home/ec2-user/codigo"
+        mode: push
+
+    - name: Executar o script de preparação
+      become: yes
+      become_user: ec2-user
+      shell: |
+        PKG_CONFIG_PATH=/usr/lib64/openmpi/lib/pkgconfig PATH=/usr/lib64/openmpi/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/ec2-user/.local/bin:/home/ec2-user/bin  LD_LIBRARY_PATH=/usr/lib64/openmpi/lib bash /home/ec2-user/codigo/io500/prepare.sh
+      args:
+        chdir: /home/ec2-user/codigo/io500
+
+    - name: Executar make
+      become: yes
+      become_user: ec2-user
+      shell: PKG_CONFIG_PATH=/usr/lib64/openmpi/lib/pkgconfig PATH=/usr/lib64/openmpi/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/ec2-user/.local/bin:/home/ec2-user/bin LD_LIBRARY_PATH=/usr/lib64/openmpi/lib make
+      args:
+        chdir: /home/ec2-user/codigo/io500
+
+    - name: Executar io500 em um host aleatório
+      become: yes
+      become_user: ec2-user
+      shell: PKG_CONFIG_PATH=/usr/lib64/openmpi/lib/pkgconfig PATH=/usr/lib64/openmpi/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/ec2-user/.local/bin:/home/ec2-user/bin LD_LIBRARY_PATH=/usr/lib64/openmpi/lib HOSTS={{ HOSTS  }} ./io500.sh config-minimal.ini
+      args:
+        chdir: /home/ec2-user/codigo/io500
+      run_once: true
+      register: out
+    - debug: var=out.stdout_lines
