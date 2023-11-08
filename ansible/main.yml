@@ -33,12 +33,34 @@
       args:
         chdir: /home/ec2-user/codigo/io500
 
-    - name: Executar io500 em um host aleatório
-      become: yes
-      become_user: ec2-user
-      shell: PKG_CONFIG_PATH=/usr/lib64/openmpi/lib/pkgconfig PATH=/usr/lib64/openmpi/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/ec2-user/.local/bin:/home/ec2-user/bin LD_LIBRARY_PATH=/usr/lib64/openmpi/lib HOSTS={{ HOSTS  }} ./io500.sh config-minimal.ini
-      args:
-        chdir: /home/ec2-user/codigo/io500
-      run_once: true
-      register: out
-    - debug: var=out.stdout_lines
+    - name: Gather facts from 'all' hosts in inventory
+      vars:
+        ansible_host_key_checking: false
+        ansible_ssh_extra_args: '-o UserKnownHostsFile=/dev/null'
+      tasks:
+        - setup:
+          gather_subset: network
+    - name: Add public keys to known_hosts file
+      hosts: localhost
+      connection: local
+      vars:
+        ssh_known_hosts_file: "{{ lookup('env','HOME') + '/.ssh/known_hosts' }}"
+        ssh_known_hosts: "{{ groups['all'] }}"
+      tasks:
+        - known_hosts:
+            path: "{{ ssh_known_hosts_file }}"
+            name: "{{ item }}"
+            key: "{{ lookup('pipe','ssh-keyscan -T 10 ' + item + ',' + lookup('dig',item)) }}"
+            state: present
+          loop: "{{ ssh_known_hosts | map('extract', hostvars, ['ansible_fqdn']) | list }}"
+          become: no
+
+#    - name: Executar io500 em um host aleatório
+#      become: yes
+#      become_user: ec2-user
+#      shell: PKG_CONFIG_PATH=/usr/lib64/openmpi/lib/pkgconfig PATH=/usr/lib64/openmpi/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/ec2-user/.local/bin:/home/ec2-user/bin LD_LIBRARY_PATH=/usr/lib64/openmpi/lib HOSTS={{ HOSTS  }} ./io500.sh config-minimal.ini
+#      args:
+#        chdir: /home/ec2-user/codigo/io500
+#      run_once: true
+#      register: out
+#    - debug: var=out.stdout_lines
