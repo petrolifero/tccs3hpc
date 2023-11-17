@@ -3,6 +3,11 @@ output "public_ip_addresses" {
   value       = aws_instance.cluster[*].public_ip
 }
 
+output "private_dns" {
+  description = "DNS privados das instâncias EC2"
+  value       = aws_instance.cluster[*].private_dns
+}
+
 output "lustre_mount_name" {
   description = "Mount name do sistema lustre"
   value = aws_fsx_lustre_file_system.example.mount_name
@@ -11,4 +16,8 @@ output "lustre_mount_name" {
 output "lustre_dns_name" {
   description = "DNS name do sistema lustre"
   value = aws_fsx_lustre_file_system.example.dns_name
+}
+
+output "url_do_bucket" {
+  value = aws_s3_bucket.use_on_cluster.website_endpoint
 }

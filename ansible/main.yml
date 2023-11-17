@@ -7,9 +7,10 @@
       file:
         path: /tmp/fsx
         state: directory
-#    - name: mount /tmp/fsx
-#      shell: "sudo mount -t lustre -o relatime,flock {{ dns_name }}@tcp:{{ mount_name }} /tmp/fsx"
-
+    - name: Montar o lustre no /tmp/fsx
+      shell: |
+        sudo mount -t lustre -o relatime,flock {{ dns_name  }}@tcp:/{{ mount_name }} /tmp/fsx
+        sudo chmod 777 /tmp/fsx
     - name: Copiar o diretório local ../io500 para /tmp/codigo
       become: yes
       become_user: ec2-user
@@ -17,7 +18,6 @@
         src: "../io500"
         dest: "/home/ec2-user/codigo"
         mode: push
-
     - name: Executar o script de preparação
       become: yes
       become_user: ec2-user
@@ -25,42 +25,23 @@
         PKG_CONFIG_PATH=/usr/lib64/openmpi/lib/pkgconfig PATH=/usr/lib64/openmpi/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/ec2-user/.local/bin:/home/ec2-user/bin  LD_LIBRARY_PATH=/usr/lib64/openmpi/lib bash /home/ec2-user/codigo/io500/prepare.sh
       args:
         chdir: /home/ec2-user/codigo/io500
-
     - name: Executar make
       become: yes
       become_user: ec2-user
       shell: PKG_CONFIG_PATH=/usr/lib64/openmpi/lib/pkgconfig PATH=/usr/lib64/openmpi/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/ec2-user/.local/bin:/home/ec2-user/bin LD_LIBRARY_PATH=/usr/lib64/openmpi/lib make
       args:
         chdir: /home/ec2-user/codigo/io500
+    - name: Executar o s3
+      become: yes
+      become_user: ec2-user
+      shell: PKG_CONFIG_PATH=/usr/lib64/openmpi/lib/pkgconfig PATH=/usr/lib64/openmpi/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/ec2-user/.local/bin:/home/ec2-user/bn LD_LIBRARY_PATH=/usr/lib64/openmpi/lib bash /home/ec2-user/codigo/io500/contrib/s3/prepare-s3.sh
+      args:
+        chdir: /home/ec2-user/codigo/io500
+    - name: Copiar chave privada
+      ansible.builtin.copy:
+        src: ~/.ssh/id_ed25519
+        dest: /home/ec2-user/.ssh/id_ed25519
+        owner: ec2-user
+        group: ec2-user
+        mode: "0600"
 
-    - name: Gather facts from 'all' hosts in inventory
-      vars:
-        ansible_host_key_checking: false
-        ansible_ssh_extra_args: '-o UserKnownHostsFile=/dev/null'
-      tasks:
-        - setup:
-          gather_subset: network
-    - name: Add public keys to known_hosts file
-      hosts: localhost
-      connection: local
-      vars:
-        ssh_known_hosts_file: "{{ lookup('env','HOME') + '/.ssh/known_hosts' }}"
-        ssh_known_hosts: "{{ groups['all'] }}"
-      tasks:
-        - known_hosts:
-            path: "{{ ssh_known_hosts_file }}"
-            name: "{{ item }}"
-            key: "{{ lookup('pipe','ssh-keyscan -T 10 ' + item + ',' + lookup('dig',item)) }}"
-            state: present
-          loop: "{{ ssh_known_hosts | map('extract', hostvars, ['ansible_fqdn']) | list }}"
-          become: no
-
-#    - name: Executar io500 em um host aleatório
-#      become: yes
-#      become_user: ec2-user
-#      shell: PKG_CONFIG_PATH=/usr/lib64/openmpi/lib/pkgconfig PATH=/usr/lib64/openmpi/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/ec2-user/.local/bin:/home/ec2-user/bin LD_LIBRARY_PATH=/usr/lib64/openmpi/lib HOSTS={{ HOSTS  }} ./io500.sh config-minimal.ini
-#      args:
-#        chdir: /home/ec2-user/codigo/io500
-#      run_once: true
-#      register: out
-#    - debug: var=out.stdout_lines

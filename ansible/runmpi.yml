@@ -1,0 +1,11 @@
+---
+- name: Configuração básica
+  hosts: all
+  become: true
+  tasks:
+    - name: runIo500
+      shell: PKG_CONFIG_PATH=/usr/lib64/openmpi/lib/pkgconfig PATH=/usr/lib64/openmpi/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/ec2-user/.local/bin:/home/ec2-user/bn LD_LIBRARY_PATH=/usr/lib64/openmpi/lib HOSTS={{ HOSTS }} bash /home/ec2-user/codigo/io500/io500.sh config-minimal.ini
+      args:
+        chdir: /home/ec2-user/codigo/io500
+      become: yes
+      become_user: ec2-user
