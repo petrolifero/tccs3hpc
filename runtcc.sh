@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/bash -x
 
 calculate_hash() {
     sha256sum packer/main.pkr.hcl | cut -d ' ' -f 1
@@ -42,6 +42,7 @@ run_terraform() {
     terraform apply -auto-approve -var "cluster_ami=${cluster_ami}"
     PUBLIC_HOSTS=$(terraform output -json | jq '.public_ip_addresses.value' | grep \" | sed 's/"//g' | sed 's/,//g' | sed 's/ //g' | paste -s -d ',')
     PRIVATE_HOSTS=$(terraform output -json | jq '.private_dns.value' | grep \" | sed 's/"//g' | sed 's/,//g' | sed 's/ //g' | paste -s -d ',')
+    echo PRIVATE_HOSTS=${PRIVATE_HOSTS}
     LUSTRE_DNS_NAME=$(terraform output -json | jq '.lustre_dns_name.value')
     LUSTRE_MOUNT_NAME=$(terraform output -json | jq '.lustre_mount_name.value')
     cd ..
@@ -53,7 +54,7 @@ run_ansible() {
     echo "Entering Ansible"
     cd ansible
     ANSIBLE_SSH_ARGS="-o ServerAliveInterval=5 -o ServerAliveCountMax=1" ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i "${PUBLIC_HOSTS}" main.yml --key-file="~/.ssh/id_ed25519" --user ec2-user --extra-vars "dns_name=${LUSTRE_DNS_NAME} mount_name=${LUSTRE_MOUNT_NAME}"
-    ANSIBLE_SSH_ARGS="-o ServerAliveInterval=5 -o ServerAliveCountMax=1" ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i "${firstMachine}," runmpi.yml --key-file="~/.ssh/id_ed25519" --user ec2-user --extra-vars "HOSTS=${PRIVATE_HOSTS}"
+#    ANSIBLE_SSH_ARGS="-o ServerAliveInterval=5 -o ServerAliveCountMax=1" ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i "${firstMachine}," runmpi.yml --key-file="~/.ssh/id_ed25519" --user ec2-user --extra-vars "HOSTS=${PRIVATE_HOSTS}"
     cd ..
 
     echo "Exiting Ansible"
