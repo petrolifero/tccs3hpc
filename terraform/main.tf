@@ -7,8 +7,10 @@ terraform {
   }
 }
 
+
+
 provider "aws" {
-  region  = "sa-east-1"
+  region  = "us-east-1"
   profile = "tcc"
 }
 
@@ -117,7 +119,7 @@ resource "aws_vpc" "cluster" {
 resource "aws_subnet" "cluster" {
   vpc_id     = aws_vpc.cluster.id
   cidr_block = "10.0.1.0/24"
-
+  availability_zone = "us-east-1b"
 }
 
 resource "aws_fsx_lustre_file_system" "example" {

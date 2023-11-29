@@ -1,5 +1,5 @@
 variable "cluster_size" {
-	 default=11
+	 default=60
 	 type=number
 }
 

@@ -7,18 +7,14 @@ packer {
   }
 }
 
-variable "build_context_hash" {
-  description = "Hash value to include in the packer build context tag"
-}
-
 source "amazon-ebs" "amazon-linux" {
   ami_name      = "mpi-ami-amazon-linux"
   instance_type = "t2.micro"
-  region        = "sa-east-1"
+  region        = "us-east-1"
   profile       = "tcc"
   source_ami_filter {
     filters = {
-      image-id = "ami-0c947c8216a00bbe9"
+      image-id = "ami-0fa1ca9559f1892ec"
       root-device-type    = "ebs"
       virtualization-type = "hvm"
     }
@@ -28,10 +24,6 @@ source "amazon-ebs" "amazon-linux" {
   force_deregister= true
   ssh_username = "ec2-user"
   temporary_key_pair_type = "ed25519"
-
-  tags = {
-    "build_context_hash" = var.build_context_hash
-  }
 }
 
 build {
@@ -50,6 +42,7 @@ build {
       "sudo yum -y install libcurl-devel.x86_64",
       "sudo yum -y install openssl-devel.x86_64",
       "sudo yum -y install libxml2-devel.x86_64 ",
+      "sudo yum -y install tmux",
       "echo >>~/.bashrc",
       "echo 'export MPI_PYTHON2_SITEARCH=/usr/lib64/python2.7/site-packages/openmpi' >> ~/.bashrc",
       "echo 'export MPI_INCLUDE=/usr/include/openmpi-x86_64' >> ~/.bashrc",
