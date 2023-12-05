@@ -101,7 +101,7 @@ remains the same. The lustre used was the one provisioned by the aws fsx service
 
 \vspace{.4cm}
 
-\noindent \textbf{Aprovado em:} dd/mm/aaaa.~~~\textbf{Versão Final em:} dd/mm/aaaaComo visto na figura~\ref{fig:lustre}., 
+\noindent \textbf{Aprovado em:} dd/mm/aaaa.~~~\textbf{Versão Final em:} dd/mm/aaaa
 
 \begin{figure}[!ht]
 	\centering
@@ -114,12 +114,22 @@ remains the same. The lustre used was the one provisioned by the aws fsx service
 
 HPC é utilizado para computar uma grande gama de problemas, que mesmo uma única maquina poderosa não seria capaz em tempo hábil (i.e. Resolução de sistemas de equações parciais em uma grande malha para simulação). Normalmente as aplicações HPC são escritas em C ou Fortran, e rodam em super-computadores dedicados a essa função, como o mistral, super-computador alemão.
 
-Desde a criação da AWS, em 2006, as plataformas de computação com modelo elastico, pagando pelo uso, vulgo nuvem, se tornaram a norma no desenvolvimento de aplicações, chegando até mesmo a areas altamente reguladas como o setor de pagamentos. Por conta disso, pesquisadores buscavam verificar se a nuvem poderia suportar os workflows de aplicações HPC. Nesse contexto, o artigo de 2021, "analyzing the performance of the S3 Object Storage API for HPC Workloads", foi tomado como base para realização desse trabalho, buscando avaliar as mudanças nos resultados que possam ter advindo nesses dois anos. Para isso, utilizei o io500, benchmark ior e mdtest, dado que o find, outro benchmark fornecido pelo io500, não é suportado para uso com o s3.
+Desde a criação da AWS, em 2006, as plataformas de computação com modelo elastico, pagando pelo uso, vulgo nuvem, se tornaram a norma no desenvolvimento de aplicações, chegando até mesmo a areas altamente reguladas como o setor de pagamentos. Por conta disso, pesquisadores buscavam verificar se a nuvem poderia suportar os workflows de aplicações HPC. Nesse contexto, o artigo de 2021, "analyzing the performance of the S3 Object Storage API for HPC Workloads", foi tomado como base para realização desse trabalho, buscando avaliar as mudanças nos resultados que possam ter advindo nesses dois anos. Para isso, utilizei o io500, benchmark ior e mdtest, dado que o find, outro benchmark fornecido pelo io500, não é suportado para uso com o s3. 
 
-\section{Desenvolvimento}
+\section{Reprodução da avaliação de desempenho do s3 para aplicações HPC}
+\subsection{Execução usando S3}
+O artigo utilizou o lustre e implementações da API do S3 
+\subsection{Execução usando lustre}
+O artigo utilizou o lustre e implementações da API do S3 
+\subsection{Analise dos resultados}
+...
+\section{Explorando parametros do lustre}
+\section{Explorando parametros do s3}
+\section{Resultados experimentais e analise}
+
 
 \subsection{Lustre - baseline}
-Como visto na figura~\ref{fig:lustre}., a arquitetura utilizada contém 2 sub-redes, uma privada e uma pública, com as maquinas da subnet privada acessando o lustre provisionado via o serviço fsx da propria AWS. Isso garante que o teste não será influenciado por falhas no provisionamento do cluster. Essa arquitetura foi pensada pois a conexão direta entre as maquinas e o lustre, que exige uma interface de rede, não é possivel enquanto se mantém um ip publico. O teste foi executado com script runTcc.sh, com seu código em anexo. Os resultados foram
+Como visto na figura~\ref{fig:lustre}., a arquitetura utilizada contém 1 sub-redes, pública, com as maquinas ec2 nestas acessando o lustre provisionado via o serviço fsx da propria AWS. Isso garante que o teste não será influenciado por falhas no provisionamento do cluster. O teste foi executado com script runTcc.sh, com seu código no repositorio indicado "" . Os resultados foram obtidos variando-se 3 parametros : número de instâncias t3.large executando o io500, tamanho do arquivo utilizado na execução dos testes
 
 \begin{table}[htb]
 	\begin{tabular}{|l|l|l|}
@@ -158,7 +168,7 @@ Como visto na figura~\ref{fig:s3}., a arquitetura utilizada contém 2 sub-redes,
 	\label{fig:s3}
 \end{figure}
 
-\section{Conclusão}
+\section{Conclusão e trabalhos futuros}
 
 
 \newpage

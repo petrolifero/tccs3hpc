@@ -133,7 +133,7 @@ resource "aws_fsx_lustre_file_system" "example" {
 resource "aws_instance" "cluster" {
   count           = var.cluster_size
   ami             = var.cluster_ami
-  instance_type   = "t3.large"
+  instance_type   = "t3.2xlarge"
   key_name        = aws_key_pair.deployer.key_name
   vpc_security_group_ids = [aws_security_group.ssh_access.id]
   subnet_id = aws_subnet.cluster.id

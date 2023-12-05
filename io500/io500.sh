@@ -11,7 +11,7 @@
 
 # This script takes its parameters from the same .ini file as io500 binary.
 io500_ini="$1"          # You can set the ini file here
-io500_mpirun="mpiexec"
+io500_mpirun="mpiexec --verbose "
 io500_mpiargs="-np ${HOSTS_SIZE} --host $HOSTS"
 
 function setup(){

@@ -43,6 +43,8 @@ build {
       "sudo yum -y install openssl-devel.x86_64",
       "sudo yum -y install libxml2-devel.x86_64 ",
       "sudo yum -y install tmux",
+      "sudo yum -y install gdb",
+      "sudo yum -y install tree",
       "echo >>~/.bashrc",
       "echo 'export MPI_PYTHON2_SITEARCH=/usr/lib64/python2.7/site-packages/openmpi' >> ~/.bashrc",
       "echo 'export MPI_INCLUDE=/usr/include/openmpi-x86_64' >> ~/.bashrc",
