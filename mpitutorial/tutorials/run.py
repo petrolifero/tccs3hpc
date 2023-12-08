@@ -52,9 +52,9 @@ else:
             stdout=devnull, stderr=subprocess.STDOUT, shell=True)
 
     mpirun = os.environ.get('MPIRUN', 'mpirun')
-    hosts = '' if not os.environ.get('MPI_HOSTS') else '-f {0}'.format(os.environ.get('MPI_HOSTS'))
+    hosts = '' if not os.environ.get('MPI_HOSTS') else '-host {0}'.format(os.environ.get('MPI_HOSTS'))
 
-    sys_call = '{0} -n {1} {2} ./{3}/code/{4}'.format(
+    sys_call = '{0} -n {1} {2} --mca plm_base_verbose 10 ./{3}/code/{4}'.format(
         mpirun, programs[program_to_run][1], hosts, programs[program_to_run][0], program_to_run)
 
     if len(programs[program_to_run]) > 2:
