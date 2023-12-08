@@ -17,7 +17,8 @@ stonewall-time = 30
 [ior-easy]
 API = 
 transferSize = 2m
-blockSize = 9920000m
+#blockSize = 9920000m
+blockSize = 900000m
 filePerProc = FALSE
 uniqueDir = FALSE
 run = TRUE

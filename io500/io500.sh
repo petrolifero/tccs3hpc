@@ -11,8 +11,9 @@
 
 # This script takes its parameters from the same .ini file as io500 binary.
 io500_ini="$1"          # You can set the ini file here
-io500_mpirun="mpiexec --verbose "
-io500_mpiargs="-np ${HOSTS_SIZE} --host $HOSTS"
+io500_mpirun="mpirun --verbose "
+plm_agent="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+io500_mpiargs="-np ${HOSTS_SIZE} --host $HOSTS --mca plm_base_verbose 10 --mca plm_rsh_agent '${plm_agent}' --mca plm_rsh_no_tree_spawn 1"
 
 function setup(){
   local workdir="$1"
@@ -80,9 +81,15 @@ function get_ini_global_param() {
   echo "${val:-$default}"
 }
 
+#function run_benchmarks {
+#  $io500_mpirun $io500_mpiargs $PWD/io500 $io500_ini --timestamp $timestamp
+#}
+
 function run_benchmarks {
-  $io500_mpirun $io500_mpiargs $PWD/io500 $io500_ini --timestamp $timestamp
+  cmd="$io500_mpirun $io500_mpiargs $PWD/io500 $io500_ini --timestamp $timestamp"
+  eval "$cmd"
 }
+
 
 create_tarball() {
   local sourcedir=$(dirname $io500_resultdir)

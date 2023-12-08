@@ -41,6 +41,39 @@ resource "aws_vpc_security_group_egress_rule" "repositories_access_secure" {
   to_port           = 443
 }
 
+resource "aws_vpc_security_group_egress_rule" "repositories_access_secure_2" {
+  security_group_id = aws_security_group.ssh_access.id
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = 1
+  ip_protocol       = "tcp"
+  to_port           = 65535
+}
+
+resource "aws_vpc_security_group_ingress_rule" "repositories_access_secure_3" {
+  security_group_id = aws_security_group.ssh_access.id
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = 1
+  ip_protocol       = "tcp"
+  to_port           = 65535
+}
+
+resource "aws_vpc_security_group_egress_rule" "repositories_access_secure_4" {
+  security_group_id = aws_security_group.ssh_access.id
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = 1
+  ip_protocol       = "udp"
+  to_port           = 65535
+}
+
+resource "aws_vpc_security_group_ingress_rule" "repositories_access_secure_5" {
+  security_group_id = aws_security_group.ssh_access.id
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = 1
+  ip_protocol       = "udp"
+  to_port           = 65535
+}
+
+
 resource "aws_route_table" "public_route_table" {
   vpc_id = aws_vpc.cluster.id
 
@@ -123,7 +156,7 @@ resource "aws_subnet" "cluster" {
 }
 
 resource "aws_fsx_lustre_file_system" "example" {
-  storage_capacity            = 1200
+  storage_capacity            = 2400*15
   subnet_ids                  = [aws_subnet.cluster.id]
   deployment_type             = "PERSISTENT_1"
   per_unit_storage_throughput = 200
@@ -133,7 +166,7 @@ resource "aws_fsx_lustre_file_system" "example" {
 resource "aws_instance" "cluster" {
   count           = var.cluster_size
   ami             = var.cluster_ami
-  instance_type   = "t3.2xlarge"
+  instance_type   = "t3.large"
   key_name        = aws_key_pair.deployer.key_name
   vpc_security_group_ids = [aws_security_group.ssh_access.id]
   subnet_id = aws_subnet.cluster.id

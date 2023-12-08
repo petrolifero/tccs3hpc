@@ -15,6 +15,11 @@
 \usepackage[alf,abnt-etal-text=it]{abntex2cite}
 \usepackage[brazil]{babel}
 \usepackage[space]{grffile}
+
+\usepackage{geometry}
+\usepackage{multirow}
+\usepackage[table]{xcolor}
+
 \graphicspath{ {./images/} }
 \setlength{\parindent}{3em}
 
@@ -119,27 +124,276 @@ Desde a criação da AWS, em 2006, as plataformas de computação com modelo ela
 \section{Reprodução da avaliação de desempenho do s3 para aplicações HPC}
 \subsection{Execução usando S3}
 O artigo utilizou o lustre e implementações da API do S3 
+\begin{table}[htb]
+	\centering
+	\begin{tabular}{|l|l|l|l|l|}
+		\hline
+		\rowcolor[HTML]{EFEFEF}
+		\textbf{Test}          & \textbf{Throughput}        & \textbf{IOPS}         & \textbf{Time (s)} & \textbf{Unit} \\ \hline
+		ior-easy-write         & 0.002189                    & -                    & 303.523           & GiB/s         \\ \hline
+		mdtest-easy-write      & -                          & 0.005847             & 302.666           & kIOPS         \\ \hline
+		timestamp              & -                          & 0.000000             & 0.001             & kIOPS         \\ \hline
+		ior-hard-write         & 0.000130                    & -                    & 301.501           & GiB/s         \\ \hline
+		mdtest-hard-write      & -                          & 0.001975             & 302.595           & kIOPS         \\ \hline
+		find                   & -                          & 0.000000             & 0.000 [INVALID]   & kIOPS         \\ \hline
+		ior-easy-read          & 0.010056                    & -                    & 66.307            & GiB/s         \\ \hline
+		mdtest-easy-stat       & -                          & 0.006040             & 292.609           & kIOPS         \\ \hline
+		ior-hard-read          & 0.000262                    & -                    & 150.044           & GiB/s         \\ \hline
+		mdtest-hard-stat       & -                          & 0.006040             & 100.022           & kIOPS         \\ \hline
+		mdtest-easy-delete     & -                          & 0.002928             & 601.830           & kIOPS         \\ \hline
+		mdtest-hard-read       & -                          & 0.003012             & 198.905           & kIOPS         \\ \hline
+		mdtest-hard-delete     & -                          & 0.002956             & 203.265           & kIOPS         \\ \hline
+	\end{tabular}
+	\caption{IO500 Benchmark Results}
+	\label{tab:io500-results}
+\end{table}
+
+\textbf{Score:} Bandwidth 0.000931 GiB/s : IOPS 0.003778 kiops : TOTAL 0.001875 [INVALID]
 \subsection{Execução usando lustre}
-O artigo utilizou o lustre e implementações da API do S3 
+O artigo utilizou o lustre via FSX com as seguintes configurações : 
+\begin{table}[htb]
+	\centering
+	\begin{tabular}{|l|l|l|l|l|}
+		\hline
+		\rowcolor[HTML]{EFEFEF}
+		\textbf{Test}          & \textbf{Throughput}        & \textbf{IOPS}         & \textbf{Time (s)} & \textbf{Unit} \\ \hline
+		ior-easy-write         & 0.002189                    & -                    & 303.523           & GiB/s         \\ \hline
+		mdtest-easy-write      & -                          & 0.005847             & 302.666           & kIOPS         \\ \hline
+		timestamp              & -                          & 0.000000             & 0.001             & kIOPS         \\ \hline
+		ior-hard-write         & 0.000130                    & -                    & 301.501           & GiB/s         \\ \hline
+		mdtest-hard-write      & -                          & 0.001975             & 302.595           & kIOPS         \\ \hline
+		find                   & -                          & 0.000000             & 0.000 [INVALID]   & kIOPS         \\ \hline
+		ior-easy-read          & 0.010056                    & -                    & 66.307            & GiB/s         \\ \hline
+		mdtest-easy-stat       & -                          & 0.006040             & 292.609           & kIOPS         \\ \hline
+		ior-hard-read          & 0.000262                    & -                    & 150.044           & GiB/s         \\ \hline
+		mdtest-hard-stat       & -                          & 0.006040             & 100.022           & kIOPS         \\ \hline
+		mdtest-easy-delete     & -                          & 0.002928             & 601.830           & kIOPS         \\ \hline
+		mdtest-hard-read       & -                          & 0.003012             & 198.905           & kIOPS         \\ \hline
+		mdtest-hard-delete     & -                          & 0.002956             & 203.265           & kIOPS         \\ \hline
+	\end{tabular}
+	\caption{IO500 Benchmark Results}
+	\label{tab:io500-results}
+\end{table}
+
+\textbf{Score:} Bandwidth 0.000931 GiB/s : IOPS 0.003778 kiops : TOTAL 0.001875 [INVALID]
 \subsection{Analise dos resultados}
 ...
+...
 \section{Explorando parametros do lustre}
-\section{Explorando parametros do s3}
-\section{Resultados experimentais e analise}
+Os parametros a serem avaliados serão 
+\begin{table}[htb]
+	\centering
+	\begin{tabular}{|l|l|l|l|l|}
+		\hline
+		\rowcolor[HTML]{EFEFEF}
+		\textbf{Test}          & \textbf{Throughput}        & \textbf{IOPS}         & \textbf{Time (s)} & \textbf{Unit} \\ \hline
+		ior-easy-write         & 0.002189                    & -                    & 303.523           & GiB/s         \\ \hline
+		mdtest-easy-write      & -                          & 0.005847             & 302.666           & kIOPS         \\ \hline
+		timestamp              & -                          & 0.000000             & 0.001             & kIOPS         \\ \hline
+		ior-hard-write         & 0.000130                    & -                    & 301.501           & GiB/s         \\ \hline
+		mdtest-hard-write      & -                          & 0.001975             & 302.595           & kIOPS         \\ \hline
+		find                   & -                          & 0.000000             & 0.000 [INVALID]   & kIOPS         \\ \hline
+		ior-easy-read          & 0.010056                    & -                    & 66.307            & GiB/s         \\ \hline
+		mdtest-easy-stat       & -                          & 0.006040             & 292.609           & kIOPS         \\ \hline
+		ior-hard-read          & 0.000262                    & -                    & 150.044           & GiB/s         \\ \hline
+		mdtest-hard-stat       & -                          & 0.006040             & 100.022           & kIOPS         \\ \hline
+		mdtest-easy-delete     & -                          & 0.002928             & 601.830           & kIOPS         \\ \hline
+		mdtest-hard-read       & -                          & 0.003012             & 198.905           & kIOPS         \\ \hline
+		mdtest-hard-delete     & -                          & 0.002956             & 203.265           & kIOPS         \\ \hline
+	\end{tabular}
+	\caption{IO500 Benchmark Results}
+	\label{tab:io500-results}
+\end{table}
 
+\textbf{Score:} Bandwidth 0.000931 GiB/s : IOPS 0.003778 kiops : TOTAL 0.001875 [INVALID]
+
+\begin{table}[htb]
+	\centering
+	\begin{tabular}{|l|l|l|l|l|}
+		\hline
+		\rowcolor[HTML]{EFEFEF}
+		\textbf{Test}          & \textbf{Throughput}        & \textbf{IOPS}         & \textbf{Time (s)} & \textbf{Unit} \\ \hline
+		ior-easy-write         & 0.002189                    & -                    & 303.523           & GiB/s         \\ \hline
+		mdtest-easy-write      & -                          & 0.005847             & 302.666           & kIOPS         \\ \hline
+		timestamp              & -                          & 0.000000             & 0.001             & kIOPS         \\ \hline
+		ior-hard-write         & 0.000130                    & -                    & 301.501           & GiB/s         \\ \hline
+		mdtest-hard-write      & -                          & 0.001975             & 302.595           & kIOPS         \\ \hline
+		find                   & -                          & 0.000000             & 0.000 [INVALID]   & kIOPS         \\ \hline
+		ior-easy-read          & 0.010056                    & -                    & 66.307            & GiB/s         \\ \hline
+		mdtest-easy-stat       & -                          & 0.006040             & 292.609           & kIOPS         \\ \hline
+		ior-hard-read          & 0.000262                    & -                    & 150.044           & GiB/s         \\ \hline
+		mdtest-hard-stat       & -                          & 0.006040             & 100.022           & kIOPS         \\ \hline
+		mdtest-easy-delete     & -                          & 0.002928             & 601.830           & kIOPS         \\ \hline
+		mdtest-hard-read       & -                          & 0.003012             & 198.905           & kIOPS         \\ \hline
+		mdtest-hard-delete     & -                          & 0.002956             & 203.265           & kIOPS         \\ \hline
+	\end{tabular}
+	\caption{IO500 Benchmark Results}
+	\label{tab:io500-results}
+\end{table}
+
+\textbf{Score:} Bandwidth 0.000931 GiB/s : IOPS 0.003778 kiops : TOTAL 0.001875 [INVALID]
+
+\begin{table}[htb]
+	\centering
+	\begin{tabular}{|l|l|l|l|l|}
+		\hline
+		\rowcolor[HTML]{EFEFEF}
+		\textbf{Test}          & \textbf{Throughput}        & \textbf{IOPS}         & \textbf{Time (s)} & \textbf{Unit} \\ \hline
+		ior-easy-write         & 0.002189                    & -                    & 303.523           & GiB/s         \\ \hline
+		mdtest-easy-write      & -                          & 0.005847             & 302.666           & kIOPS         \\ \hline
+		timestamp              & -                          & 0.000000             & 0.001             & kIOPS         \\ \hline
+		ior-hard-write         & 0.000130                    & -                    & 301.501           & GiB/s         \\ \hline
+		mdtest-hard-write      & -                          & 0.001975             & 302.595           & kIOPS         \\ \hline
+		find                   & -                          & 0.000000             & 0.000 [INVALID]   & kIOPS         \\ \hline
+		ior-easy-read          & 0.010056                    & -                    & 66.307            & GiB/s         \\ \hline
+		mdtest-easy-stat       & -                          & 0.006040             & 292.609           & kIOPS         \\ \hline
+		ior-hard-read          & 0.000262                    & -                    & 150.044           & GiB/s         \\ \hline
+		mdtest-hard-stat       & -                          & 0.006040             & 100.022           & kIOPS         \\ \hline
+		mdtest-easy-delete     & -                          & 0.002928             & 601.830           & kIOPS         \\ \hline
+		mdtest-hard-read       & -                          & 0.003012             & 198.905           & kIOPS         \\ \hline
+		mdtest-hard-delete     & -                          & 0.002956             & 203.265           & kIOPS         \\ \hline
+	\end{tabular}
+	\caption{IO500 Benchmark Results}
+	\label{tab:io500-results}
+\end{table}
+
+\textbf{Score:} Bandwidth 0.000931 GiB/s : IOPS 0.003778 kiops : TOTAL 0.001875 [INVALID]
+
+\begin{table}[htb]
+	\centering
+	\begin{tabular}{|l|l|l|l|l|}
+		\hline
+		\rowcolor[HTML]{EFEFEF}
+		\textbf{Test}          & \textbf{Throughput}        & \textbf{IOPS}         & \textbf{Time (s)} & \textbf{Unit} \\ \hline
+		ior-easy-write         & 0.002189                    & -                    & 303.523           & GiB/s         \\ \hline
+		mdtest-easy-write      & -                          & 0.005847             & 302.666           & kIOPS         \\ \hline
+		timestamp              & -                          & 0.000000             & 0.001             & kIOPS         \\ \hline
+		ior-hard-write         & 0.000130                    & -                    & 301.501           & GiB/s         \\ \hline
+		mdtest-hard-write      & -                          & 0.001975             & 302.595           & kIOPS         \\ \hline
+		find                   & -                          & 0.000000             & 0.000 [INVALID]   & kIOPS         \\ \hline
+		ior-easy-read          & 0.010056                    & -                    & 66.307            & GiB/s         \\ \hline
+		mdtest-easy-stat       & -                          & 0.006040             & 292.609           & kIOPS         \\ \hline
+		ior-hard-read          & 0.000262                    & -                    & 150.044           & GiB/s         \\ \hline
+		mdtest-hard-stat       & -                          & 0.006040             & 100.022           & kIOPS         \\ \hline
+		mdtest-easy-delete     & -                          & 0.002928             & 601.830           & kIOPS         \\ \hline
+		mdtest-hard-read       & -                          & 0.003012             & 198.905           & kIOPS         \\ \hline
+		mdtest-hard-delete     & -                          & 0.002956             & 203.265           & kIOPS         \\ \hline
+	\end{tabular}
+	\caption{IO500 Benchmark Results}
+	\label{tab:io500-results}
+\end{table}
+
+\textbf{Score:} Bandwidth 0.000931 GiB/s : IOPS 0.003778 kiops : TOTAL 0.001875 [INVALID]
+
+\begin{table}[htb]
+	\centering
+	\begin{tabular}{|l|l|l|l|l|}
+		\hline
+		\rowcolor[HTML]{EFEFEF}
+		\textbf{Test}          & \textbf{Throughput}        & \textbf{IOPS}         & \textbf{Time (s)} & \textbf{Unit} \\ \hline
+		ior-easy-write         & 0.002189                    & -                    & 303.523           & GiB/s         \\ \hline
+		mdtest-easy-write      & -                          & 0.005847             & 302.666           & kIOPS         \\ \hline
+		timestamp              & -                          & 0.000000             & 0.001             & kIOPS         \\ \hline
+		ior-hard-write         & 0.000130                    & -                    & 301.501           & GiB/s         \\ \hline
+		mdtest-hard-write      & -                          & 0.001975             & 302.595           & kIOPS         \\ \hline
+		find                   & -                          & 0.000000             & 0.000 [INVALID]   & kIOPS         \\ \hline
+		ior-easy-read          & 0.010056                    & -                    & 66.307            & GiB/s         \\ \hline
+		mdtest-easy-stat       & -                          & 0.006040             & 292.609           & kIOPS         \\ \hline
+		ior-hard-read          & 0.000262                    & -                    & 150.044           & GiB/s         \\ \hline
+		mdtest-hard-stat       & -                          & 0.006040             & 100.022           & kIOPS         \\ \hline
+		mdtest-easy-delete     & -                          & 0.002928             & 601.830           & kIOPS         \\ \hline
+		mdtest-hard-read       & -                          & 0.003012             & 198.905           & kIOPS         \\ \hline
+		mdtest-hard-delete     & -                          & 0.002956             & 203.265           & kIOPS         \\ \hline
+	\end{tabular}
+	\caption{IO500 Benchmark Results}
+	\label{tab:io500-results}
+\end{table}
+
+\textbf{Score:} Bandwidth 0.000931 GiB/s : IOPS 0.003778 kiops : TOTAL 0.001875 [INVALID]
+
+\begin{table}[htb]
+	\centering
+	\begin{tabular}{|l|l|l|l|l|}
+		\hline
+		\rowcolor[HTML]{EFEFEF}
+		\textbf{Test}          & \textbf{Throughput}        & \textbf{IOPS}         & \textbf{Time (s)} & \textbf{Unit} \\ \hline
+		ior-easy-write         & 0.002189                    & -                    & 303.523           & GiB/s         \\ \hline
+		mdtest-easy-write      & -                          & 0.005847             & 302.666           & kIOPS         \\ \hline
+		timestamp              & -                          & 0.000000             & 0.001             & kIOPS         \\ \hline
+		ior-hard-write         & 0.000130                    & -                    & 301.501           & GiB/s         \\ \hline
+		mdtest-hard-write      & -                          & 0.001975             & 302.595           & kIOPS         \\ \hline
+		find                   & -                          & 0.000000             & 0.000 [INVALID]   & kIOPS         \\ \hline
+		ior-easy-read          & 0.010056                    & -                    & 66.307            & GiB/s         \\ \hline
+		mdtest-easy-stat       & -                          & 0.006040             & 292.609           & kIOPS         \\ \hline
+		ior-hard-read          & 0.000262                    & -                    & 150.044           & GiB/s         \\ \hline
+		mdtest-hard-stat       & -                          & 0.006040             & 100.022           & kIOPS         \\ \hline
+		mdtest-easy-delete     & -                          & 0.002928             & 601.830           & kIOPS         \\ \hline
+		mdtest-hard-read       & -                          & 0.003012             & 198.905           & kIOPS         \\ \hline
+		mdtest-hard-delete     & -                          & 0.002956             & 203.265           & kIOPS         \\ \hline
+	\end{tabular}
+	\caption{IO500 Benchmark Results}
+	\label{tab:io500-results}
+\end{table}
+
+\textbf{Score:} Bandwidth 0.000931 GiB/s : IOPS 0.003778 kiops : TOTAL 0.001875 [INVALID]
+
+\begin{table}[htb]
+	\centering
+	\begin{tabular}{|l|l|l|l|l|}
+		\hline
+		\rowcolor[HTML]{EFEFEF}
+		\textbf{Test}          & \textbf{Throughput}        & \textbf{IOPS}         & \textbf{Time (s)} & \textbf{Unit} \\ \hline
+		ior-easy-write         & 0.002189                    & -                    & 303.523           & GiB/s         \\ \hline
+		mdtest-easy-write      & -                          & 0.005847             & 302.666           & kIOPS         \\ \hline
+		timestamp              & -                          & 0.000000             & 0.001             & kIOPS         \\ \hline
+		ior-hard-write         & 0.000130                    & -                    & 301.501           & GiB/s         \\ \hline
+		mdtest-hard-write      & -                          & 0.001975             & 302.595           & kIOPS         \\ \hline
+		find                   & -                          & 0.000000             & 0.000 [INVALID]   & kIOPS         \\ \hline
+		ior-easy-read          & 0.010056                    & -                    & 66.307            & GiB/s         \\ \hline
+		mdtest-easy-stat       & -                          & 0.006040             & 292.609           & kIOPS         \\ \hline
+		ior-hard-read          & 0.000262                    & -                    & 150.044           & GiB/s         \\ \hline
+		mdtest-hard-stat       & -                          & 0.006040             & 100.022           & kIOPS         \\ \hline
+		mdtest-easy-delete     & -                          & 0.002928             & 601.830           & kIOPS         \\ \hline
+		mdtest-hard-read       & -                          & 0.003012             & 198.905           & kIOPS         \\ \hline
+		mdtest-hard-delete     & -                          & 0.002956             & 203.265           & kIOPS         \\ \hline
+	\end{tabular}
+	\caption{IO500 Benchmark Results}
+	\label{tab:io500-results}
+\end{table}
+
+\textbf{Score:} Bandwidth 0.000931 GiB/s : IOPS 0.003778 kiops : TOTAL 0.001875 [INVALID]
+\section{Resultados experimentais e analise}
+Comparando o quociente entre a leitura do lustre nos melhores parametros
 
 \subsection{Lustre - baseline}
 Como visto na figura~\ref{fig:lustre}., a arquitetura utilizada contém 1 sub-redes, pública, com as maquinas ec2 nestas acessando o lustre provisionado via o serviço fsx da propria AWS. Isso garante que o teste não será influenciado por falhas no provisionamento do cluster. O teste foi executado com script runTcc.sh, com seu código no repositorio indicado "" . Os resultados foram obtidos variando-se 3 parametros : número de instâncias t3.large executando o io500, tamanho do arquivo utilizado na execução dos testes
 
 \begin{table}[htb]
-	\begin{tabular}{|l|l|l|}
+	\centering
+	\begin{tabular}{|l|l|l|l|l|}
 		\hline
-		& mdtest & ior \\ \hline
-		ior-easy-write    &        &     \\ \hline
-		mdtest-easy-write &        &     \\ \hline
-		ior-hard-write    &        &     \\ \hline
+		\rowcolor[HTML]{EFEFEF}
+		\textbf{Test}          & \textbf{Throughput}        & \textbf{IOPS}         & \textbf{Time (s)} & \textbf{Unit} \\ \hline
+		ior-easy-write         & 0.002189                    & -                    & 303.523           & GiB/s         \\ \hline
+		mdtest-easy-write      & -                          & 0.005847             & 302.666           & kIOPS         \\ \hline
+		timestamp              & -                          & 0.000000             & 0.001             & kIOPS         \\ \hline
+		ior-hard-write         & 0.000130                    & -                    & 301.501           & GiB/s         \\ \hline
+		mdtest-hard-write      & -                          & 0.001975             & 302.595           & kIOPS         \\ \hline
+		find                   & -                          & 0.000000             & 0.000 [INVALID]   & kIOPS         \\ \hline
+		ior-easy-read          & 0.010056                    & -                    & 66.307            & GiB/s         \\ \hline
+		mdtest-easy-stat       & -                          & 0.006040             & 292.609           & kIOPS         \\ \hline
+		ior-hard-read          & 0.000262                    & -                    & 150.044           & GiB/s         \\ \hline
+		mdtest-hard-stat       & -                          & 0.006040             & 100.022           & kIOPS         \\ \hline
+		mdtest-easy-delete     & -                          & 0.002928             & 601.830           & kIOPS         \\ \hline
+		mdtest-hard-read       & -                          & 0.003012             & 198.905           & kIOPS         \\ \hline
+		mdtest-hard-delete     & -                          & 0.002956             & 203.265           & kIOPS         \\ \hline
 	\end{tabular}
+	\caption{IO500 Benchmark Results}
+	\label{tab:io500-results}
 \end{table}
+
+\textbf{Score:} Bandwidth 0.000931 GiB/s : IOPS 0.003778 kiops : TOTAL 0.001875 [INVALID]
+
 
 \begin{figure}[htb]
 	\centering
@@ -152,15 +406,30 @@ Como visto na figura~\ref{fig:lustre}., a arquitetura utilizada contém 1 sub-re
 Como visto na figura~\ref{fig:s3}., a arquitetura utilizada contém 2 sub-redes, uma privada e uma pública, com as maquinas da subnet privada acessando o bucket s3 provisionado via o serviço s3 da propria AWS. Essa arquitetura foi pensada para manter a mesma estrutura do teste com lustre, de forma que possamos comparar apenas a mudança de armazenamento. O teste foi executado com script runTcc.sh, com seu código em anexo. Os resultados foram
 
 \begin{table}[htb]
-	\begin{tabular}{|l|l|l|}
+	\centering
+	\begin{tabular}{|l|l|l|l|l|}
 		\hline
-		& mdtest & ior \\ \hline
-		ior-easy-write    &        &     \\ \hline
-		mdtest-easy-write &        &     \\ \hline
-		ior-hard-write    &        &     \\ \hline
+		\rowcolor[HTML]{EFEFEF}
+		\textbf{Test}          & \textbf{Throughput}        & \textbf{IOPS}         & \textbf{Time (s)} & \textbf{Unit} \\ \hline
+		ior-easy-write         & 0.002189                    & -                    & 303.523           & GiB/s         \\ \hline
+		mdtest-easy-write      & -                          & 0.005847             & 302.666           & kIOPS         \\ \hline
+		timestamp              & -                          & 0.000000             & 0.001             & kIOPS         \\ \hline
+		ior-hard-write         & 0.000130                    & -                    & 301.501           & GiB/s         \\ \hline
+		mdtest-hard-write      & -                          & 0.001975             & 302.595           & kIOPS         \\ \hline
+		find                   & -                          & 0.000000             & 0.000 [INVALID]   & kIOPS         \\ \hline
+		ior-easy-read          & 0.010056                    & -                    & 66.307            & GiB/s         \\ \hline
+		mdtest-easy-stat       & -                          & 0.006040             & 292.609           & kIOPS         \\ \hline
+		ior-hard-read          & 0.000262                    & -                    & 150.044           & GiB/s         \\ \hline
+		mdtest-hard-stat       & -                          & 0.006040             & 100.022           & kIOPS         \\ \hline
+		mdtest-easy-delete     & -                          & 0.002928             & 601.830           & kIOPS         \\ \hline
+		mdtest-hard-read       & -                          & 0.003012             & 198.905           & kIOPS         \\ \hline
+		mdtest-hard-delete     & -                          & 0.002956             & 203.265           & kIOPS         \\ \hline
 	\end{tabular}
+	\caption{IO500 Benchmark Results}
+	\label{tab:io500-results}
 \end{table}
 
+\textbf{Score:} Bandwidth 0.000931 GiB/s : IOPS 0.003778 kiops : TOTAL 0.001875 [INVALID]
 \begin{figure}[htb]
 	\centering
 	\includegraphics[width=1\textwidth]{s3.png}
@@ -197,6 +466,5 @@ Seção opcional. Anexos são os documentos de autoria externa, ou não elaborad
 \newpage
 \chapter*{Agradecimentos}
 \noindent
-Seção opcional. Oportunidade para o(s) autor(es) registrar(em) os agradecimentos, em especial, quando o artigo recebeu ajuda financeira de alguma instituição de fomento, ou represente o resultado de um trabalho colaborativo ou multidisciplinar, envolvendo áreas externas ao Instituto de Computação.
-
+Agradeço primeiramente a Deus pelo suporte do universo, a minha noiva pela compreensão e por ser meu norte, que me impediu de surtar, e por fim mas não menos importante, a minha orientadora que foi extremamente compreensiva, e por fim a marlene.
 \end{document}
