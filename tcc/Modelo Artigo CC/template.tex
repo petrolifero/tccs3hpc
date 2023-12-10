@@ -123,7 +123,7 @@ Desde a criação da AWS, em 2006, as plataformas de computação com modelo ela
 
 \section{Reprodução da avaliação de desempenho do s3 para aplicações HPC}
 \subsection{Execução usando S3}
-O artigo utilizou o lustre e implementações da API do S3 
+O artigo utilizou o lustre e múltiplas implementações da API do S3
 \begin{table}[htb]
 	\centering
 	\begin{tabular}{|l|l|l|l|l|}
@@ -146,9 +146,10 @@ O artigo utilizou o lustre e implementações da API do S3
 	\end{tabular}
 	\caption{IO500 Benchmark Results}
 	\label{tab:io500-results}
+	\textbf{Score:} Bandwidth 0.000931 GiB/s : IOPS 0.003778 kiops : TOTAL 0.001875 [INVALID]
 \end{table}
 
-\textbf{Score:} Bandwidth 0.000931 GiB/s : IOPS 0.003778 kiops : TOTAL 0.001875 [INVALID]
+
 \subsection{Execução usando lustre}
 O artigo utilizou o lustre via FSX com as seguintes configurações : 
 \begin{table}[htb]
@@ -173,9 +174,10 @@ O artigo utilizou o lustre via FSX com as seguintes configurações :
 	\end{tabular}
 	\caption{IO500 Benchmark Results}
 	\label{tab:io500-results}
+	\textbf{Score:} Bandwidth 0.000931 GiB/s : IOPS 0.003778 kiops : TOTAL 0.001875 [INVALID]
 \end{table}
 
-\textbf{Score:} Bandwidth 0.000931 GiB/s : IOPS 0.003778 kiops : TOTAL 0.001875 [INVALID]
+
 \subsection{Analise dos resultados}
 ...
 ...
@@ -438,7 +440,7 @@ Como visto na figura~\ref{fig:s3}., a arquitetura utilizada contém 2 sub-redes,
 \end{figure}
 
 \section{Conclusão e trabalhos futuros}
-
+Com esse trabalho pudemos verificar 
 
 \newpage
 \bibliography{references}

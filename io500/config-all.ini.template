@@ -1,11 +1,11 @@
 # Supported and current values of the ini file:
 [global]
 # The directory where the IO500 runs
-datadir = ./datafiles
+datadir = /tmp/fsx/{{ config_name }}/datafiles
 # The data directory is suffixed by a timestamp. Useful for running several IO500 tests concurrently.
 timestamp-datadir = TRUE
 # The result directory.
-resultdir = ./results
+resultdir = /tmp/fsx/{{ config_name }}/results
 # The result directory is suffixed by a timestamp. Useful for running several IO500 tests concurrently.
 timestamp-resultdir = TRUE
 # The general API for the tests (to create/delete the datadir, extra options will be passed to IOR/mdtest)
@@ -35,7 +35,7 @@ API =
 # Transfer size
 transferSize = 2m
 # Block size; must be a multiple of transferSize
-blockSize = 9920000m
+blockSize = 900000m
 # Create one file per process
 filePerProc = TRUE
 # Use unique directory per file per process

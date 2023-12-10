@@ -46,7 +46,7 @@
         mode: "0600"
     - name: generate config from template
       ansible.builtin.template:
-        src: ../io500/config-scc.ini.template
-        dest: /home/ec2-user/codigo/io500/config-scc-2.ini
+        src: ../io500/config-all.ini.template
+        dest: /home/ec2-user/codigo/io500/config-all.ini
         owner: ec2-user
         group: ec2-user
