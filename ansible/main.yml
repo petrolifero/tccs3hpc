@@ -18,13 +18,6 @@
         src: "../io500"
         dest: "/home/ec2-user/codigo"
         mode: push
-    - name: Copiar o diretório local ../mpitutorial para /tmp/codigo
-      become: yes
-      become_user: ec2-user
-      synchronize:
-        src: "../mpitutorial"
-        dest: "/home/ec2-user/codigo"
-        mode: push
     - name: Executar o script de preparação
       become: yes
       become_user: ec2-user

@@ -1,24 +1,5 @@
 #!/usr/bin/bash -x
 
-calculate_hash() {
-    sha256sum packer/main.pkr.hcl | cut -d ' ' -f 1
-}
-
-check_existing_ami() {
-    local hash="$1"
-    local ami_query="Name=tag:build_context_hash,Values=$hash"
-    local existing_ami=$(aws ec2 describe-images --filters "$ami_query" --query 'Images[0].ImageId' --output text)
-
-    if [ "$existing_ami" != "None" ]; then
-        echo "AMI with hash $hash already exists. Using existing AMI: $existing_ami"
-        cluster_ami="$existing_ami"
-        return 0
-    else
-        echo "AMI with hash $hash not found."
-        return 1
-    fi
-}
-
 run_packer() {
     echo "Entering Packer"
     if [ -f THAT_IMAGE ]; then
