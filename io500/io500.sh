@@ -13,7 +13,8 @@
 io500_ini="$1"          # You can set the ini file here
 io500_mpirun="mpirun --verbose "
 plm_agent="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
-io500_mpiargs="-np ${HOSTS_SIZE} --host $HOSTS --mca plm_base_verbose 10 --mca plm_rsh_agent '${plm_agent}' --mca plm_rsh_no_tree_spawn 1"
+#io500_mpiargs="-np ${HOSTS_SIZE} --host $HOSTS --mca plm_base_verbose 10 --mca plm_rsh_agent '${plm_agent}' --mca plm_rsh_no_tree_spawn 1"
+io500_mpiargs="-np ${HOSTS_SIZE} --host $HOSTS --mca plm_rsh_agent '${plm_agent}' --mca plm_rsh_no_tree_spawn 1"
 
 function setup(){
   local workdir="$1"
