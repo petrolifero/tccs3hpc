@@ -11,7 +11,6 @@ source "amazon-ebs" "amazon-linux" {
   ami_name      = "mpi-ami-amazon-linux"
   instance_type = "t2.micro"
   region        = "us-east-1"
-  profile       = "tcc"
   source_ami_filter {
     filters = {
       image-id = "ami-0fa1ca9559f1892ec"

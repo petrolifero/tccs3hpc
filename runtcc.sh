@@ -21,7 +21,7 @@ run_terraform() {
     INSTANCE_TYPE=$2
     echo "Entering Terraform"
     cd terraform
-    terraform apply -auto-approve -var "cluster_ami=${cluster_ami} cluster_size=${NUMBER_OF_INSTANCES}"
+    terraform apply -auto-approve -var "cluster_ami=${cluster_ami}" -var "cluster_size=${NUMBER_OF_INSTANCES}" -var "cluster_instance_type=${INSTANCE_TYPE}"
     PUBLIC_HOSTS=$(terraform output -json | jq '.public_ip_addresses.value' | grep \" | sed 's/"//g' | sed 's/,//g' | sed 's/ //g' | paste -s -d ',')
     PRIVATE_HOSTS=$(terraform output -json | jq '.private_dns.value' | grep \" | sed 's/"//g' | sed 's/,//g' | sed 's/ //g' | paste -s -d ',')
     HOSTS_SIZE=$(terraform output -json | jq '.private_dns.value | length' )
@@ -47,18 +47,19 @@ run_ansible() {
 
 prepare_cluster() {
     NUMBER_OF_INSTANCES=$1
+    INSTANCE_TYPE=$2
     run_packer
-    run_terraform $NUMBER_OF_INSTANCES
+    run_terraform $NUMBER_OF_INSTANCES $INSTANCE_TYPE
     firstMachine=$(echo $PUBLIC_HOSTS | sed 's/,/\n/g' | head -n1)   
 }
 
 main() {
     # Lendo os parâmetros dos arquivos
-    HOSTS_SIZE_FILE="parametros_instancias.txt"
-    INSTANCE_SIZE_FILE="parametros_tamanho_instancia.txt"
-    FILE_SIZE_FILE="parametros_tamanho_arquivo.txt"
-    SLICE_SIZE_FILE="parametros_tamanho_slice_lustre.txt"
-    TEST_TYPE_FILE="parametros_tipo_teste.txt"
+    HOSTS_SIZE_FILE="parametro/numero_instancias.txt"
+    INSTANCE_SIZE_FILE="parametro/tamanho_instancia.txt"
+    FILE_SIZE_FILE="parametro/tamanho_arquivo.txt"
+    SLICE_SIZE_FILE="parametro/tamanho_slice_lustre.txt"
+    TEST_TYPE_FILE="parametro/tipo_teste.txt"
 
     # Iterando sobre as linhas de cada arquivo
     while IFS= read -r HOSTS_SIZE && IFS= read -r INSTANCE_SIZE; do
@@ -72,7 +73,7 @@ main() {
 }
 
 main() {
-    prepare_cluster
+    prepare_cluster 5 t3.large
     run_ansible
     bash -x ./runMpi.sh $firstMachine $PRIVATE_HOSTS $HOSTS_SIZE
 }
