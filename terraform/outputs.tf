@@ -8,17 +8,17 @@ output "private_dns" {
   value       = aws_instance.cluster[*].private_dns
 }
 
+output "information_on_instances" {
+  description = "combinar dns privado e endereço ip publico"
+  value = zipmap(aws_instance.cluster[*].public_ip,aws_instance.cluster[*].private_dns)
+}
+
 output "lustre_mount_name" {
   description = "Mount name do sistema lustre"
-  value       = aws_fsx_lustre_file_system.example.mount_name
+  value       = var.isFSX? aws_fsx_lustre_file_system.example[0].mount_name: null
 }
 
 output "lustre_dns_name" {
   description = "DNS name do sistema lustre"
-  value       = aws_fsx_lustre_file_system.example.dns_name
-}
-
-output "queue_url" {
-  description = "url to enqueue jobs to each variant"
-  value = aws_sqs_queue.terraform_queue.url
+  value       = var.isFSX? aws_fsx_lustre_file_system.example[0].dns_name : null
 }

@@ -11,6 +11,7 @@
       shell: |
         sudo mount -t lustre -o relatime,flock {{ dns_name  }}@tcp:/{{ mount_name }} /tmp/fsx
         sudo chmod 777 /tmp/fsx
+      when: isFSX | bool
     - name: Copiar o diretório local ../io500 para /tmp/codigo
       become: yes
       become_user: ec2-user

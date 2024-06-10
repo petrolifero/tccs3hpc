@@ -1,5 +1,5 @@
 variable "cluster_size" {
-  default = 5
+  default = 3
   type    = number
 }
 
@@ -11,4 +11,14 @@ variable "cluster_ami" {
 variable "cluster_instance_type" {
   default = "t3.large"
   type    = string
+}
+
+variable "isS3" {
+  default = false
+  type = bool
+}
+
+variable "isFSX" {
+  default = false
+  type = bool
 }

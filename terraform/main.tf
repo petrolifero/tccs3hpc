@@ -5,6 +5,13 @@ terraform {
       version = "5.46.0"
     }
   }
+  backend "s3" {
+    bucket         = "tcc-terraform-state-cluster"       # Substitua pelo nome do seu bucket S3
+    key            = "tcc-state-terraform" # Substitua pelo caminho desejado no bucket S3
+    region         = "us-east-1"                  # Região do bucket S3
+    dynamodb_table = "tcc-terraform-lock"            # Nome da tabela DynamoDB para lock
+    encrypt        = false                         # Habilita a criptografia do estado no S3
+  }
 }
 
 provider "aws" {
@@ -12,7 +19,7 @@ provider "aws" {
 }
 
 resource "aws_key_pair" "deployer" {
-  key_name   = "deployer-key"
+  key_name   = "deployer-key-${terraform.workspace}"
   public_key = file("~/.ssh/id_ed25519.pub")
 }
 
@@ -153,6 +160,7 @@ resource "aws_subnet" "cluster" {
 }
 
 resource "aws_fsx_lustre_file_system" "example" {
+  count = var.isFSX ? 1 : 0
   storage_capacity            = 1200
   subnet_ids                  = [aws_subnet.cluster.id]
   deployment_type             = "SCRATCH_1"
@@ -187,21 +195,16 @@ data "aws_ec2_spot_price" "example" {
 
 resource "aws_s3_bucket" "use_on_tests" {
   bucket = "tcc-joao"
+  count = var.isS3? 1 : 0
 
 }
 
 resource "aws_s3_bucket" "use_to_results" {
-  bucket = "results-joao"
-}
-
-resource "aws_sqs_queue" "terraform_queue" {
-  name                        = "terraform-example-queue.fifo"
-  fifo_queue                  = true
-  content_based_deduplication = true
+  bucket = "results-joao-${terraform.workspace}"
 }
 
 resource "aws_iam_policy" "s3_access_policy" {
-  name        = "S3AccessPolicy"
+  name        = "S3AccessPolicy-${terraform.workspace}"
   description = "Política que permite acesso ao bucket S3 específico"
   policy      = jsonencode({
     "Version": "2012-10-17",
@@ -213,19 +216,18 @@ resource "aws_iam_policy" "s3_access_policy" {
           "s3:GetObject",
           "s3:PutObject"
         ],
-        "Resource": [
-          "arn:aws:s3:::${aws_s3_bucket.use_on_tests.bucket}",
-          "arn:aws:s3:::${aws_s3_bucket.use_on_tests.bucket}/*",
-          "arn:aws:s3:::${aws_s3_bucket.use_to_results.bucket}",
-          "arn:aws:s3:::${aws_s3_bucket.use_to_results.bucket}/*"
-        ]
+        "Resource": concat(var.isS3? [
+          "arn:aws:s3:::${aws_s3_bucket.use_on_tests[0].bucket}",
+          "arn:aws:s3:::${aws_s3_bucket.use_on_tests[0].bucket}/*"]: [],
+	  ["arn:aws:s3:::${aws_s3_bucket.use_to_results.bucket}",
+          "arn:aws:s3:::${aws_s3_bucket.use_to_results.bucket}/*"])
       }
     ]
   })
 }
 
 resource "aws_iam_role" "ec2_role" {
-  name = "EC2S3AccessRole"
+  name = "EC2S3AccessRole-${terraform.workspace}"
   assume_role_policy = jsonencode({
     "Version": "2012-10-17",
     "Statement": [
@@ -246,6 +248,90 @@ resource "aws_iam_role_policy_attachment" "s3_access_attachment" {
 }
 
 resource "aws_iam_instance_profile" "ec2_instance_profile" {
-  name = "EC2InstanceProfile"
+  name = "EC2InstanceProfile-${terraform.workspace}"
   role = aws_iam_role.ec2_role.name
+}
+
+resource "aws_lambda_function" "terraform_lambda" {
+  filename         = "./lambda_function.zip"
+  function_name    = "TerraformWorkspaceDestroyer-${terraform.workspace}"
+  role             = aws_iam_role.lambda_role.arn
+  handler          = "lambda.lambda_handler"
+  source_code_hash = filebase64sha256("./lambda_function.zip")
+  runtime          = "python3.12"
+  layers = [aws_lambda_layer_version.terraform_layer.arn]
+}
+
+resource "aws_lambda_permission" "allow_s3_invoke" {
+  statement_id  = "AllowExecutionFromS3"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.terraform_lambda.function_name
+  principal     = "s3.amazonaws.com"
+}
+
+
+resource "aws_iam_role" "lambda_role" {
+  name = "lambda_execution_role-${terraform.workspace}"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action    = "sts:AssumeRole"
+        Effect    = "Allow"
+        Principal = {
+          Service = "lambda.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy" "lambda_policy" {
+  name   = "lambda_policy-${terraform.workspace}"
+  role   = aws_iam_role.lambda_role.id
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ]
+        Resource = "arn:aws:logs:*:*:*"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "s3:GetObject",
+          "s3:ListBucket"
+        ]
+        Resource = [
+          "arn:aws:s3:::meu-lambda-bucket",
+          "arn:aws:s3:::meu-lambda-bucket/*"
+        ]
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "sts:AssumeRole",
+          "iam:GetRole",
+          "iam:PassRole",
+          "s3:*",
+          "dynamodb:*"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+
+resource "aws_lambda_layer_version" "terraform_layer" {
+  layer_name          = "terraform_layer"
+  filename = "./lambda_terraform_layer_function.zip"
+  compatible_runtimes = ["python3.12"]
+  description         = "A Lambda layer with Terraform binary"
 }

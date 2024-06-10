@@ -1,5 +1,7 @@
 #!/usr/bin/bash -x
 
+set -e
+
 run_packer() {
     echo "Entering Packer"
     if [ -f THAT_IMAGE ]; then
@@ -19,9 +21,18 @@ run_packer() {
 run_terraform() {
     NUMBER_OF_INSTANCES=$1
     INSTANCE_TYPE=$2
+    WORKSPACE=$3
     echo "Entering Terraform"
     cd terraform
-    terraform apply -auto-approve -var "cluster_ami=${cluster_ami}" -var "cluster_size=${NUMBER_OF_INSTANCES}" -var "cluster_instance_type=${INSTANCE_TYPE}"
+    cd lambdaDestroyWorkspace
+    zip -r9 ../lambda_function.zip .
+    cd ..
+    cd lambdaDestroyWorkspaceLayerTerraform
+    zip -r9 ../lambda_terraform_layer_function.zip .
+    cd ..
+    terraform workspace new $WORKSPACE || true
+    terraform workspace select $WORKSPACE
+    terraform apply -auto-approve -var "cluster_ami=${cluster_ami}" -var "cluster_size=${NUMBER_OF_INSTANCES}" -var "cluster_instance_type=${INSTANCE_TYPE}" -var "isFSX=true"
     PUBLIC_HOSTS=$(terraform output -json | jq '.public_ip_addresses.value' | grep \" | sed 's/"//g' | sed 's/,//g' | sed 's/ //g' | paste -s -d ',')
     PRIVATE_HOSTS=$(terraform output -json | jq '.private_dns.value' | grep \" | sed 's/"//g' | sed 's/,//g' | sed 's/ //g' | paste -s -d ',')
     HOSTS_SIZE=$(terraform output -json | jq '.private_dns.value | length' )
@@ -38,9 +49,11 @@ run_terraform() {
 }
 
 run_ansible() {
+    OBJECT_SIZE=$1
+    isFSX=$2
     echo "Entering Ansible"
     cd ansible
-    ANSIBLE_SSH_ARGS="-o ServerAliveInterval=5 -o ServerAliveCountMax=1" ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i "${PUBLIC_HOSTS}" main.yml --key-file="~/.ssh/id_ed25519" --user ec2-user --extra-vars "dns_name=${LUSTRE_DNS_NAME} mount_name=${LUSTRE_MOUNT_NAME} config_name=h123"
+    ANSIBLE_SSH_ARGS="-o ServerAliveInterval=5 -o ServerAliveCountMax=1" ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i "${PUBLIC_HOSTS}" main.yml --key-file="~/.ssh/id_ed25519" --user ec2-user --extra-vars "dns_name=${LUSTRE_DNS_NAME} mount_name=${LUSTRE_MOUNT_NAME} config_name=h123 object_size=${OBJECT_SIZE} isFSX=${isFSX}"
     cd ..
     echo "Exiting Ansible"
 }
@@ -48,34 +61,24 @@ run_ansible() {
 prepare_cluster() {
     NUMBER_OF_INSTANCES=$1
     INSTANCE_TYPE=$2
+    OBJECT_SIZE=$3
+    WORKSPACE=${OBJECT_SIZE}-my-new-workspace
     run_packer
-    run_terraform $NUMBER_OF_INSTANCES $INSTANCE_TYPE
+    run_terraform $NUMBER_OF_INSTANCES $INSTANCE_TYPE $WORKSPACE
     firstMachine=$(echo $PUBLIC_HOSTS | sed 's/,/\n/g' | head -n1)   
 }
 
 main() {
-    # Lendo os parâmetros dos arquivos
-    HOSTS_SIZE_FILE="parametro/numero_instancias.txt"
-    INSTANCE_SIZE_FILE="parametro/tamanho_instancia.txt"
-    FILE_SIZE_FILE="parametro/tamanho_arquivo.txt"
-    SLICE_SIZE_FILE="parametro/tamanho_slice_lustre.txt"
-    TEST_TYPE_FILE="parametro/tipo_teste.txt"
-
-    # Iterando sobre as linhas de cada arquivo
-    while IFS= read -r HOSTS_SIZE && IFS= read -r INSTANCE_SIZE; do
-        prepare_cluster "$HOSTS_SIZE" "$INSTANCE_SIZE"
-
-        while IFS= read -r FILE_SIZE && IFS= read -r SLICE_SIZE && IFS= read -r TEST_TYPE; do
-            run_ansible "$FILE_SIZE" "$SLICE_SIZE" "$TEST_TYPE"
-            bash -x ./runMpi.sh "$firstMachine" "$PRIVATE_HOSTS" "$HOSTS_SIZE"
-        done < "$FILE_SIZE_FILE" < "$SLICE_SIZE_FILE" < "$TEST_TYPE_FILE"
-    done < "$HOSTS_SIZE_FILE" < "$INSTANCE_SIZE_FILE"
-}
-
-main() {
-    prepare_cluster 5 t3.large
-    run_ansible
-    bash -x ./runMpi.sh $firstMachine $PRIVATE_HOSTS $HOSTS_SIZE
+    #object size = 10B 100B 1KB 10KB 100KB 1MB 10MB 100MB
+    #S3 or FSX
+    #on FSX, two ways : default config and optimazed
+    >THAT_MACHINE.LOG
+    for object_size in 10 100 1000 10000 100000 1000000 10000000 100000000
+    do
+	prepare_cluster 3 t3.nano $object_size
+	run_ansible $object_size true
+        bash -x ./runMpi.sh $firstMachine $PRIVATE_HOSTS $HOSTS_SIZE $isFSX
+    done
 }
 
 main
