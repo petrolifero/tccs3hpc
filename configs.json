@@ -1,0 +1,786 @@
+[
+    {
+        "object_size": 10,
+        "mode": "fsx",
+        "fsxPerformance1": 1
+    },
+    {
+        "object_size": 10,
+        "mode": "fsx",
+        "fsxPerformance1": 10
+    },
+    {
+        "object_size": 10,
+        "mode": "fsx",
+        "fsxPerformance1": 100
+    },
+    {
+        "object_size": 10,
+        "mode": "fsx",
+        "fsxPerformance1": 1000
+    },
+    {
+        "object_size": 10,
+        "mode": "fsx",
+        "fsxPerformance1": 10000
+    },
+    {
+        "object_size": 10,
+        "mode": "fsx",
+        "fsxPerformance1": 100000
+    },
+    {
+        "object_size": 10,
+        "mode": "fsx",
+        "fsxPerformance1": 1000000
+    },
+    {
+        "object_size": 10,
+        "mode": "s3"
+    },
+    {
+        "object_size": 10,
+        "mode": "s3"
+    },
+    {
+        "object_size": 10,
+        "mode": "s3"
+    },
+    {
+        "object_size": 10,
+        "mode": "s3"
+    },
+    {
+        "object_size": 10,
+        "mode": "s3"
+    },
+    {
+        "object_size": 10,
+        "mode": "s3"
+    },
+    {
+        "object_size": 10,
+        "mode": "s3"
+    },
+    {
+        "object_size": 10,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 1
+    },
+    {
+        "object_size": 10,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 10
+    },
+    {
+        "object_size": 10,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 100
+    },
+    {
+        "object_size": 10,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 1000
+    },
+    {
+        "object_size": 10,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 10000
+    },
+    {
+        "object_size": 10,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 100000
+    },
+    {
+        "object_size": 10,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 1000000
+    },
+    {
+        "object_size": 100,
+        "mode": "fsx",
+        "fsxPerformance1": 1
+    },
+    {
+        "object_size": 100,
+        "mode": "fsx",
+        "fsxPerformance1": 10
+    },
+    {
+        "object_size": 100,
+        "mode": "fsx",
+        "fsxPerformance1": 100
+    },
+    {
+        "object_size": 100,
+        "mode": "fsx",
+        "fsxPerformance1": 1000
+    },
+    {
+        "object_size": 100,
+        "mode": "fsx",
+        "fsxPerformance1": 10000
+    },
+    {
+        "object_size": 100,
+        "mode": "fsx",
+        "fsxPerformance1": 100000
+    },
+    {
+        "object_size": 100,
+        "mode": "fsx",
+        "fsxPerformance1": 1000000
+    },
+    {
+        "object_size": 100,
+        "mode": "s3"
+    },
+    {
+        "object_size": 100,
+        "mode": "s3"
+    },
+    {
+        "object_size": 100,
+        "mode": "s3"
+    },
+    {
+        "object_size": 100,
+        "mode": "s3"
+    },
+    {
+        "object_size": 100,
+        "mode": "s3"
+    },
+    {
+        "object_size": 100,
+        "mode": "s3"
+    },
+    {
+        "object_size": 100,
+        "mode": "s3"
+    },
+    {
+        "object_size": 100,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 1
+    },
+    {
+        "object_size": 100,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 10
+    },
+    {
+        "object_size": 100,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 100
+    },
+    {
+        "object_size": 100,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 1000
+    },
+    {
+        "object_size": 100,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 10000
+    },
+    {
+        "object_size": 100,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 100000
+    },
+    {
+        "object_size": 100,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 1000000
+    },
+    {
+        "object_size": 1000,
+        "mode": "fsx",
+        "fsxPerformance1": 1
+    },
+    {
+        "object_size": 1000,
+        "mode": "fsx",
+        "fsxPerformance1": 10
+    },
+    {
+        "object_size": 1000,
+        "mode": "fsx",
+        "fsxPerformance1": 100
+    },
+    {
+        "object_size": 1000,
+        "mode": "fsx",
+        "fsxPerformance1": 1000
+    },
+    {
+        "object_size": 1000,
+        "mode": "fsx",
+        "fsxPerformance1": 10000
+    },
+    {
+        "object_size": 1000,
+        "mode": "fsx",
+        "fsxPerformance1": 100000
+    },
+    {
+        "object_size": 1000,
+        "mode": "fsx",
+        "fsxPerformance1": 1000000
+    },
+    {
+        "object_size": 1000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 1000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 1000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 1000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 1000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 1000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 1000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 1000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 1
+    },
+    {
+        "object_size": 1000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 10
+    },
+    {
+        "object_size": 1000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 100
+    },
+    {
+        "object_size": 1000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 1000
+    },
+    {
+        "object_size": 1000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 10000
+    },
+    {
+        "object_size": 1000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 100000
+    },
+    {
+        "object_size": 1000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 1000000
+    },
+    {
+        "object_size": 10000,
+        "mode": "fsx",
+        "fsxPerformance1": 1
+    },
+    {
+        "object_size": 10000,
+        "mode": "fsx",
+        "fsxPerformance1": 10
+    },
+    {
+        "object_size": 10000,
+        "mode": "fsx",
+        "fsxPerformance1": 100
+    },
+    {
+        "object_size": 10000,
+        "mode": "fsx",
+        "fsxPerformance1": 1000
+    },
+    {
+        "object_size": 10000,
+        "mode": "fsx",
+        "fsxPerformance1": 10000
+    },
+    {
+        "object_size": 10000,
+        "mode": "fsx",
+        "fsxPerformance1": 100000
+    },
+    {
+        "object_size": 10000,
+        "mode": "fsx",
+        "fsxPerformance1": 1000000
+    },
+    {
+        "object_size": 10000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 10000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 10000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 10000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 10000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 10000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 10000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 10000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 1
+    },
+    {
+        "object_size": 10000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 10
+    },
+    {
+        "object_size": 10000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 100
+    },
+    {
+        "object_size": 10000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 1000
+    },
+    {
+        "object_size": 10000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 10000
+    },
+    {
+        "object_size": 10000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 100000
+    },
+    {
+        "object_size": 10000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 1000000
+    },
+    {
+        "object_size": 100000,
+        "mode": "fsx",
+        "fsxPerformance1": 1
+    },
+    {
+        "object_size": 100000,
+        "mode": "fsx",
+        "fsxPerformance1": 10
+    },
+    {
+        "object_size": 100000,
+        "mode": "fsx",
+        "fsxPerformance1": 100
+    },
+    {
+        "object_size": 100000,
+        "mode": "fsx",
+        "fsxPerformance1": 1000
+    },
+    {
+        "object_size": 100000,
+        "mode": "fsx",
+        "fsxPerformance1": 10000
+    },
+    {
+        "object_size": 100000,
+        "mode": "fsx",
+        "fsxPerformance1": 100000
+    },
+    {
+        "object_size": 100000,
+        "mode": "fsx",
+        "fsxPerformance1": 1000000
+    },
+    {
+        "object_size": 100000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 100000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 100000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 100000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 100000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 100000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 100000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 100000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 1
+    },
+    {
+        "object_size": 100000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 10
+    },
+    {
+        "object_size": 100000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 100
+    },
+    {
+        "object_size": 100000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 1000
+    },
+    {
+        "object_size": 100000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 10000
+    },
+    {
+        "object_size": 100000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 100000
+    },
+    {
+        "object_size": 100000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 1000000
+    },
+    {
+        "object_size": 1000000,
+        "mode": "fsx",
+        "fsxPerformance1": 1
+    },
+    {
+        "object_size": 1000000,
+        "mode": "fsx",
+        "fsxPerformance1": 10
+    },
+    {
+        "object_size": 1000000,
+        "mode": "fsx",
+        "fsxPerformance1": 100
+    },
+    {
+        "object_size": 1000000,
+        "mode": "fsx",
+        "fsxPerformance1": 1000
+    },
+    {
+        "object_size": 1000000,
+        "mode": "fsx",
+        "fsxPerformance1": 10000
+    },
+    {
+        "object_size": 1000000,
+        "mode": "fsx",
+        "fsxPerformance1": 100000
+    },
+    {
+        "object_size": 1000000,
+        "mode": "fsx",
+        "fsxPerformance1": 1000000
+    },
+    {
+        "object_size": 1000000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 1000000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 1000000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 1000000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 1000000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 1000000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 1000000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 1000000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 1
+    },
+    {
+        "object_size": 1000000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 10
+    },
+    {
+        "object_size": 1000000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 100
+    },
+    {
+        "object_size": 1000000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 1000
+    },
+    {
+        "object_size": 1000000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 10000
+    },
+    {
+        "object_size": 1000000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 100000
+    },
+    {
+        "object_size": 1000000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 1000000
+    },
+    {
+        "object_size": 10000000,
+        "mode": "fsx",
+        "fsxPerformance1": 1
+    },
+    {
+        "object_size": 10000000,
+        "mode": "fsx",
+        "fsxPerformance1": 10
+    },
+    {
+        "object_size": 10000000,
+        "mode": "fsx",
+        "fsxPerformance1": 100
+    },
+    {
+        "object_size": 10000000,
+        "mode": "fsx",
+        "fsxPerformance1": 1000
+    },
+    {
+        "object_size": 10000000,
+        "mode": "fsx",
+        "fsxPerformance1": 10000
+    },
+    {
+        "object_size": 10000000,
+        "mode": "fsx",
+        "fsxPerformance1": 100000
+    },
+    {
+        "object_size": 10000000,
+        "mode": "fsx",
+        "fsxPerformance1": 1000000
+    },
+    {
+        "object_size": 10000000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 10000000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 10000000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 10000000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 10000000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 10000000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 10000000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 10000000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 1
+    },
+    {
+        "object_size": 10000000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 10
+    },
+    {
+        "object_size": 10000000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 100
+    },
+    {
+        "object_size": 10000000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 1000
+    },
+    {
+        "object_size": 10000000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 10000
+    },
+    {
+        "object_size": 10000000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 100000
+    },
+    {
+        "object_size": 10000000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 1000000
+    },
+    {
+        "object_size": 100000000,
+        "mode": "fsx",
+        "fsxPerformance1": 1
+    },
+    {
+        "object_size": 100000000,
+        "mode": "fsx",
+        "fsxPerformance1": 10
+    },
+    {
+        "object_size": 100000000,
+        "mode": "fsx",
+        "fsxPerformance1": 100
+    },
+    {
+        "object_size": 100000000,
+        "mode": "fsx",
+        "fsxPerformance1": 1000
+    },
+    {
+        "object_size": 100000000,
+        "mode": "fsx",
+        "fsxPerformance1": 10000
+    },
+    {
+        "object_size": 100000000,
+        "mode": "fsx",
+        "fsxPerformance1": 100000
+    },
+    {
+        "object_size": 100000000,
+        "mode": "fsx",
+        "fsxPerformance1": 1000000
+    },
+    {
+        "object_size": 100000000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 100000000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 100000000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 100000000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 100000000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 100000000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 100000000,
+        "mode": "s3"
+    },
+    {
+        "object_size": 100000000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 1
+    },
+    {
+        "object_size": 100000000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 10
+    },
+    {
+        "object_size": 100000000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 100
+    },
+    {
+        "object_size": 100000000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 1000
+    },
+    {
+        "object_size": 100000000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 10000
+    },
+    {
+        "object_size": 100000000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 100000
+    },
+    {
+        "object_size": 100000000,
+        "mode": "fsxOptimal",
+        "fsxPerformance1": 1000000
+    }
+]

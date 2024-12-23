@@ -19,11 +19,12 @@ run_packer() {
 }
 
 run_terraform() {
-    NUMBER_OF_INSTANCES=$1
-    INSTANCE_TYPE=$2
-    WORKSPACE=$3
-    ISFSX=$4
-    ISS3=$5
+#    NUMBER_OF_INSTANCES=$1
+#    INSTANCE_TYPE=$2
+#    WORKSPACE=$3
+#    ISFSX=$4
+#    ISS3=$5
+    configsFile=$1
     echo "Entering Terraform"
     cd terraform
     cd lambdaDestroyWorkspace
@@ -32,9 +33,9 @@ run_terraform() {
     cd lambdaDestroyWorkspaceLayerTerraform
     zip -r9 ../lambda_terraform_layer_function.zip .
     cd ..
-    terraform workspace new $WORKSPACE || true
-    terraform workspace select $WORKSPACE
-    terraform apply -auto-approve -var "cluster_ami=${cluster_ami}" -var "cluster_size=${NUMBER_OF_INSTANCES}" -var "cluster_instance_type=${INSTANCE_TYPE}" -var "isFSX=${ISFSX}" -var "isS3=${ISS3}"
+#    terraform workspace new $WORKSPACE || true
+#    terraform workspace select $WORKSPACE
+    terraform apply -auto-approve -var "cluster_ami=${cluster_ami}" -var "config=$(cat $configsFile)"
     PUBLIC_HOSTS=$(terraform output -json | jq '.public_ip_addresses.value' | grep \" | sed 's/"//g' | sed 's/,//g' | sed 's/ //g' | paste -s -d ',')
     PRIVATE_HOSTS=$(terraform output -json | jq '.private_dns.value' | grep \" | sed 's/"//g' | sed 's/,//g' | sed 's/ //g' | paste -s -d ',')
     HOSTS_SIZE=$(terraform output -json | jq '.private_dns.value | length' )
@@ -65,21 +66,21 @@ run_ansible() {
 }
 
 prepare_cluster() {
-    NUMBER_OF_INSTANCES=$1
-    INSTANCE_TYPE=$2
-    OBJECT_SIZE=$3
-    MODE=$4
-    WORKSPACE=${OBJECT_SIZE}-${MODE}-my-new-workspace
+#    NUMBER_OF_INSTANCES=$1
+#    INSTANCE_TYPE=$2
+#    OBJECT_SIZE=$3
+#    MODE=$4
+#    WORKSPACE=${OBJECT_SIZE}-${MODE}-my-new-workspace
     run_packer
-    isFSX=false
-    isS3=false
-    if [[ "$MODE" == *fsx* ]]; then
-	isFSX=true
-    else
-	isS3=true
-    fi
-    run_terraform $NUMBER_OF_INSTANCES $INSTANCE_TYPE $WORKSPACE $isFSX $isS3
-    firstMachine=$(echo $PUBLIC_HOSTS | sed 's/,/\n/g' | head -n1)   
+#   isFSX=false
+#   isS3=false
+#    if [[ "$MODE" == *fsx* ]]; then
+#	isFSX=true
+#    else
+#	isS3=true
+#    fi
+    run_terraform "../configs.json" #$NUMBER_OF_INSTANCES $INSTANCE_TYPE $WORKSPACE $isFSX $isS3
+#    firstMachine=$(echo $PUBLIC_HOSTS | sed 's/,/\n/g' | head -n1)   
 }
 
 main() {
@@ -87,15 +88,19 @@ main() {
     #S3 or FSX
     #on FSX, two ways : default config and optimazed
     >THAT_MACHINE.LOG
-    for object_size in 10 100 1000 10000 100000 1000000 10000000 100000000
-    do
-	for mode in fsx s3 fsxOptimal
-	do
-	    prepare_cluster 3 t3.nano $object_size $mode
-	    run_ansible $object_size $mode $isFSX $isS3 ${S3_ENDPOINT}
-            bash -x ./runMpi.sh $firstMachine $PRIVATE_HOSTS $HOSTS_SIZE $isFSX $isS3
-        done
-    done
+#    for object_size in 10 100 1000 10000 100000 1000000 10000000 100000000
+#    do
+#	for mode in fsx s3 fsxOptimal
+#	do
+#	    for fsxPerformance in 1 10 100 1000 10000 100000 1000000
+#	    do
+#		prepare_cluster 3 t3.nano $object_size $mode
+#		run_ansible $object_size $mode $isFSX $isS3 ${S3_ENDPOINT}
+#		bash -x ./runMpi.sh $firstMachine $PRIVATE_HOSTS $HOSTS_SIZE $isFSX $isS3
+#	    done
+#        done
+    #    done
+    prepare_cluster
 }
 
 main
