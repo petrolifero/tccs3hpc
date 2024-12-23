@@ -45,6 +45,7 @@ run_terraform() {
     echo PRIVATE_HOSTS=${PRIVATE_HOSTS}
     LUSTRE_DNS_NAME=$(terraform output -json | jq '.lustre_dns_name.value')
     LUSTRE_MOUNT_NAME=$(terraform output -json | jq '.lustre_mount_name.value')
+    S3_ENDPOINT=$(terraform output -json | jq '.s3_endpoint.value')
     cd ..
 
     echo "Exiting Terraform"
@@ -52,10 +53,13 @@ run_terraform() {
 
 run_ansible() {
     OBJECT_SIZE=$1
-    isFSX=$2
+    MODE=$2
+    isFSX=$3
+    isS3=$4
+    S3_ENDPOINT=$5
     echo "Entering Ansible"
     cd ansible
-    ANSIBLE_SSH_ARGS="-o ServerAliveInterval=5 -o ServerAliveCountMax=1" ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i "${PUBLIC_HOSTS}" main.yml --key-file="~/.ssh/id_ed25519" --user ec2-user --extra-vars "dns_name=${LUSTRE_DNS_NAME} mount_name=${LUSTRE_MOUNT_NAME} config_name=h123 object_size=${OBJECT_SIZE} isFSX=${isFSX}"
+    ANSIBLE_SSH_ARGS="-o ServerAliveInterval=5 -o ServerAliveCountMax=1" ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i "${PUBLIC_HOSTS}" main.yml --key-file="~/.ssh/id_ed25519" --user ec2-user --extra-vars "dns_name=${LUSTRE_DNS_NAME} mount_name=${LUSTRE_MOUNT_NAME} config_name=h123 object_size=${OBJECT_SIZE} isFSX=${isFSX} S3_ENDPOINT=${S3_ENDPOINT}"
     cd ..
     echo "Exiting Ansible"
 }
@@ -85,10 +89,10 @@ main() {
     >THAT_MACHINE.LOG
     for object_size in 10 100 1000 10000 100000 1000000 10000000 100000000
     do
-	for mode in fsx s3 : #fsxOptimal
+	for mode in fsx s3 fsxOptimal
 	do
 	    prepare_cluster 3 t3.nano $object_size $mode
-	    run_ansible $object_size $mode $isFSX $isS3
+	    run_ansible $object_size $mode $isFSX $isS3 ${S3_ENDPOINT}
             bash -x ./runMpi.sh $firstMachine $PRIVATE_HOSTS $HOSTS_SIZE $isFSX $isS3
         done
     done

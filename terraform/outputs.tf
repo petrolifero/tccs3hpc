@@ -22,3 +22,8 @@ output "lustre_dns_name" {
   description = "DNS name do sistema lustre"
   value       = var.isFSX? aws_fsx_lustre_file_system.example[0].dns_name : null
 }
+
+output "s3_endpoint" {
+  description = "S3 endpoint to use on io500"
+  value       = var.isS3? aws_s3_bucket.use_on_tests[0].bucket : null
+}
