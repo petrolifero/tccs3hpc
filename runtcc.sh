@@ -27,12 +27,12 @@ run_terraform() {
     configsFile=$1
     echo "Entering Terraform"
     cd terraform
-    cd lambdaDestroyWorkspace
-    zip -r9 ../lambda_function.zip .
-    cd ..
-    cd lambdaDestroyWorkspaceLayerTerraform
-    zip -r9 ../lambda_terraform_layer_function.zip .
-    cd ..
+#    cd lambdaDestroyWorkspace
+#    zip -r9 ../lambda_function.zip .
+#    cd ..
+#    cd lambdaDestroyWorkspaceLayerTerraform
+#    zip -r9 ../lambda_terraform_layer_function.zip .
+#    cd ..
 #    terraform workspace new $WORKSPACE || true
 #    terraform workspace select $WORKSPACE
     terraform apply -auto-approve -var "cluster_ami=${cluster_ami}" -var "config=$(cat $configsFile)"
@@ -78,7 +78,8 @@ prepare_cluster() {
 #	isFSX=true
 #    else
 #	isS3=true
-#    fi
+    #    fi
+    python generateTemplates.py > configs.json
     run_terraform "../configs.json" #$NUMBER_OF_INSTANCES $INSTANCE_TYPE $WORKSPACE $isFSX $isS3
 #    firstMachine=$(echo $PUBLIC_HOSTS | sed 's/,/\n/g' | head -n1)   
 }

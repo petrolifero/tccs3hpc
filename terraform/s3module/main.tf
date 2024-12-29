@@ -41,14 +41,7 @@ resource "aws_subnet" "cluster" {
   availability_zone = "us-east-1b"
 }
 
-data "aws_ec2_spot_price" "example" {
-  instance_type     = var.instanceType
-  availability_zone = "us-east-1b"
-  filter {
-    name   = "product-description"
-    values = ["Linux/UNIX"]
-  }
-}
+
 
 
 resource "aws_s3_bucket" "use_on_tests" {
@@ -86,4 +79,49 @@ resource "aws_iam_policy" "s3_access_policy" {
 resource "aws_iam_role_policy_attachment" "s3_access_attachment" {
   role       = aws_iam_role.ec2_role.name
   policy_arn = aws_iam_policy.s3_access_policy.arn
+}
+
+resource "aws_iam_role" "ec2_role" {
+  name = "EC2S3AccessRole-${terraform.workspace}"
+  assume_role_policy = jsonencode({
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Principal": {
+          "Service": "ec2.amazonaws.com"
+        },
+        "Action": "sts:AssumeRole"
+      }
+    ]
+  })
+}
+
+
+resource "aws_instance" "cluster" {
+  count                       = var.cluster_size
+  ami                         = var.cluster_ami
+  instance_type               = var.cluster_instance_type
+  key_name                    = aws_key_pair.deployer.key_name
+  vpc_security_group_ids      = [aws_security_group.ssh_access.id]
+  subnet_id                   = aws_subnet.cluster.id
+  iam_instance_profile = aws_iam_instance_profile.ec2_instance_profile.name
+  associate_public_ip_address = true
+    instance_market_options {
+    market_type = "spot"
+    spot_options {
+      max_price = 2*var.spot_price
+    }
+  }
+}
+
+
+
+
+
+
+
+resource "aws_iam_instance_profile" "ec2_instance_profile" {
+  name = "EC2InstanceProfile-${terraform.workspace}"
+  role = aws_iam_role.ec2_role.name
 }

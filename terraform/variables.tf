@@ -6,3 +6,4 @@ variable "cluster_ami" {
 variable "config" {
   type = string
 }
+
