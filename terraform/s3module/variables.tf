@@ -10,10 +10,30 @@ variable "cluster_size" {
 type=string
 }
 
-variable "spot_price" {
-   type=number
+variable "vpc" {
+type=string
 }
 
-locals {
-    pureIdentifier=var.cluster_instance_type
+variable "key_name" {
+type=string
+}
+
+variable "security_group_ids" {
+type=list(string)
+}
+
+variable "subnet_id" {
+type=string
+}
+
+variable "role_name" {
+type=string
+}
+
+variable "instance_profile" {
+type=string
+}
+
+variable "pure_identifier" {
+type=string
 }

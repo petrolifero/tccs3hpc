@@ -10,6 +10,22 @@ variable "cluster_ami" {
     type=string
 }
 
-variable "spot_price" {
-type=number
+variable "vpc" {
+type=string
+}
+
+variable "key_name" {
+type=string
+}
+
+variable "security_group_ids" {
+type=list(string)
+}
+
+variable "subnet_id" {
+type=string
+}
+
+variable "pure_identifier" {
+type=string
 }

@@ -75,6 +75,13 @@ resource "aws_internet_gateway" "example" {
   }
 }
 
+resource "aws_subnet" "cluster" {
+  vpc_id            = aws_vpc.cluster.id
+  cidr_block        = "10.0.1.0/24"
+  availability_zone = "us-east-1b"
+}
+
+
 resource "aws_route_table_association" "public_subnet_association" {
   subnet_id      = aws_subnet.cluster.id
   route_table_id = aws_route_table.public_route_table.id

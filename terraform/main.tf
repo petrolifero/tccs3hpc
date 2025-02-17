@@ -24,7 +24,13 @@ module "s3" {
   cluster_instance_type=each.value.instance_type
   cluster_ami=var.cluster_ami
   cluster_size=each.value.cluster_size
-  spot_price=data.aws_ec2_spot_price.example.spot_price
+  vpc=aws_vpc.cluster.id
+  key_name=aws_key_pair.deployer.key_name
+  security_group_ids=[aws_security_group.ssh_access.id]
+  subnet_id=aws_subnet.cluster.id
+  role_name=aws_iam_role.ec2_role.name
+  instance_profile=aws_iam_instance_profile.ec2_instance_profile.name
+  pure_identifier=each.value.id
 }
 
 module "fsx" {
@@ -33,17 +39,72 @@ module "fsx" {
   cluster_instance_type=each.value.instance_type
   cluster_size=each.value.cluster_size
   cluster_ami=var.cluster_ami
-  spot_price=data.aws_ec2_spot_price.example.spot_price
+  vpc=aws_vpc.cluster.id
+  key_name=aws_key_pair.deployer.key_name
+  security_group_ids=[aws_security_group.ssh_access.id]
+  subnet_id=aws_subnet.cluster.id
+  pure_identifier=each.value.id
+}
+
+resource "aws_vpc" "cluster" {
+  cidr_block           = "10.0.0.0/16"
+  enable_dns_hostnames = true
+}
+
+resource "aws_vpc_security_group_egress_rule" "lustre_access_1" {
+  security_group_id = aws_security_group.ssh_access.id
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = 988
+  ip_protocol       = "tcp"
+  to_port           = 988
+}
+
+resource "aws_vpc_security_group_ingress_rule" "lustre_access_2" {
+  security_group_id = aws_security_group.ssh_access.id
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = 988
+  ip_protocol       = "tcp"
+  to_port           = 988
+}
+
+resource "aws_vpc_security_group_egress_rule" "lustre_access_3" {
+  security_group_id = aws_security_group.ssh_access.id
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = 1018
+  ip_protocol       = "tcp"
+  to_port           = 1023
+}
+
+resource "aws_vpc_security_group_ingress_rule" "lustre_access_4" {
+  security_group_id = aws_security_group.ssh_access.id
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = 1018
+  ip_protocol       = "tcp"
+  to_port           = 1023
+}
+
+resource "aws_iam_role" "ec2_role" {
+  name = "EC2S3AccessRole"
+  assume_role_policy = jsonencode({
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Principal": {
+          "Service": "ec2.amazonaws.com"
+        },
+        "Action": "sts:AssumeRole"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_instance_profile" "ec2_instance_profile" {
+  name = "instance_profile_iam"
+  role = aws_iam_role.ec2_role.name
 }
 
 
-
-data "aws_ec2_spot_price" "example" {
-  filter {
-    name   = "product-description"
-    values = ["Linux"]
-  }
-}
 
 locals {
          parsed_array = jsondecode(var.config)
